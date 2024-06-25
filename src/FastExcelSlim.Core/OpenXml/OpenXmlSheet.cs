@@ -37,7 +37,7 @@ internal class OpenXmlSheet<T> : OpenXmlSheet where T : IOpenXmlWritable<T>
 
     private static string GetSheetName(int id)
     {
-        return T.SheetName == ExcelXml.DefaultSheetName ? $"sheet{id}" : T.SheetName;
+        return T.SheetName ?? $"sheet{id}";
     }
 
     public void Write(scoped ref ZipEntryWriterWrapper wrapper)

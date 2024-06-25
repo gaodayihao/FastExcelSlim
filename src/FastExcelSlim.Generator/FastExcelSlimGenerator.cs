@@ -30,7 +30,7 @@ namespace FastExcelSlim.Generator;
 [Generator(LanguageNames.CSharp)]
 public partial class FastExcelSlimGenerator : IIncrementalGenerator
 {
-    public const string OpenXmlSerializableAttributeFullName = "FastExcelSlim.OpenXmlWritableAttribute";
+    public const string OpenXmlWritableAttributeFullName = "FastExcelSlim.OpenXmlWritableAttribute";
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -51,7 +51,7 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
             });
 
         var typeDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
-            OpenXmlSerializableAttributeFullName,
+            OpenXmlWritableAttributeFullName,
             predicate: static (node, _) => node is ClassDeclarationSyntax
                 or StructDeclarationSyntax
                 or RecordDeclarationSyntax,

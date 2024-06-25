@@ -7,7 +7,7 @@ public interface IOpenXmlWritable<T> where T : IOpenXmlWritable<T>
 {
     static abstract int ColumnCount { get; }
 
-    static abstract string SheetName { get; }
+    static abstract string? SheetName { get; }
 
     static abstract void RegisterFormatter();
 

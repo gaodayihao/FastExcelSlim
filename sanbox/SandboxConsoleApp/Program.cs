@@ -1,19 +1,10 @@
-﻿using System.Buffers;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Diagnostics;
 using Dapper;
 //using System.IO.Pipelines;
 //using System.Text;
 using FastExcelSlim;
-using FastExcelSlim.Extensions;
 using FastExcelSlim.OpenXml;
 using MySql.Data.MySqlClient;
-using Utf8StringInterpolation;
-
-var ms = new Student().GetType().GetMethods();
-var m = new Student().GetType().GetMethod("RegisterFormatter",
-    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-
 //var buffer = new byte[5];
 //var ms = new MemoryStream(buffer);
 //var pipe = PipeWriter.Create(ms);
@@ -157,55 +148,43 @@ sw.Stop();
 Console.WriteLine($"done cost: {sw.Elapsed.TotalSeconds}s");
 Console.ReadLine();
 
-public class Student : IOpenXmlWritable<Student>
+[OpenXmlWritable("Demo")]
+public partial class DemoEntity
+{
+    [OpenXmlOrder(0)]
+    public int Id { get; set; }
+
+    [OpenXmlOrder(2)]
+    public string? Name { get; set; }
+
+    [OpenXmlOrder(1)]
+    [OpenXmlProperty("Student Number", 50)]
+    public string? Number { get; set; }
+
+    [OpenXmlOrder(3)]
+    [OpenXmlProperty("Gender", 20)]
+    public string? Gender { get; set; }
+
+    [OpenXmlOrder(4)]
+    [OpenXmlProperty("Age")]
+    private int? _age;
+
+    [OpenXmlOrder(5)]
+    [OpenXmlProperty(35)]
+    public DateTime BirthDay { get; set; }
+
+    [OpenXmlIgnore]
+    public DateTime LastOnline { get; set; }
+}
+
+[OpenXmlWritable]
+public partial class Student
 {
     public int Id { get; set; }
 
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
-    public string Number { get; set; }
+    public string? Number { get; set; }
 
-    public string Gender { get; set; }
-
-    public static int ColumnCount => 4;
-
-    public static string SheetName => "Student";
-
-    static Student()
-    {
-        OpenXmlFormatterProvider.Register<Student>();
-    }
-
-    public static void RegisterFormatter()
-    {
-        if (!OpenXmlFormatterProvider.IsRegistered<Student>())
-        {
-            OpenXmlFormatterProvider.Register(new OpenXmlFormatter<Student>());
-        }
-    }
-
-    public static void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles<Student> styles, int rowIndex,
-        scoped ref Student value) where TBufferWriter : IBufferWriter<byte>
-    {
-        writer.WriteCell(styles, value.Id, rowIndex, 1, nameof(Id), ref value);
-        writer.WriteCell(styles, value.Name, rowIndex, 2, nameof(Name), ref value);
-        writer.WriteCell(styles, value.Number, rowIndex, 3, nameof(Number), ref value);
-        writer.WriteCell(styles, value.Gender, rowIndex, 4, nameof(Gender), ref value);
-    }
-
-    public static void WriteColumns<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer) where TBufferWriter : IBufferWriter<byte>
-    {
-        for (int i = 1; i <= ColumnCount; i++)
-        {
-            writer.WriteColumn(i, 15);
-        }
-    }
-
-    public static void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles<Student> styles) where TBufferWriter : IBufferWriter<byte>
-    {
-        writer.WriteHeader(styles, nameof(Id), nameof(Id), 1);
-        writer.WriteHeader(styles, nameof(Name), nameof(Name), 2);
-        writer.WriteHeader(styles, nameof(Number), nameof(Number), 3);
-        writer.WriteHeader(styles, nameof(Gender), nameof(Gender), 4);
-    }
+    public string? Gender { get; set; }
 }

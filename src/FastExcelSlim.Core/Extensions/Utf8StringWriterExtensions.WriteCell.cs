@@ -95,6 +95,21 @@ static partial class Utf8StringWriterExtensions
         }
         writer.AppendLiteral("</v></c>");
     }
+    
+    public static void WriteCell<TBufferWriter, T>(
+        this scoped ref Utf8StringWriter<TBufferWriter> writer,
+        OpenXmlStyles<T> styles,
+        TimeOnly? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
+        where T : IOpenXmlWritable<T>
+        where TBufferWriter : IBufferWriter<byte>
+    {
+        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        writer.AppendLiteral("<c r=\"");
+        writer.ConvertXYToCellReference(columnIndex, rowIndex);
+        writer.AppendLiteral("\" t=\"str\"");
+        writer.WriteAttribute("s", styleIndex);
+        writer.AppendFormat($"><v>{value:HH:mm:ss}</v></c>");
+    }
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
