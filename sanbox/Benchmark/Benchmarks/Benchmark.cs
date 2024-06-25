@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using BenchmarkDotNet.Attributes;
-using FastExcelSlim.OpenXml;
 using Microsoft.IO;
 using MiniExcelLibs;
 using MiniExcelLibs.OpenXml;
@@ -33,7 +32,7 @@ public class Benchmark
     public void FastExcelSlim()
     {
         using var stream = Manager.GetStream();
-        new OpenXmlWorkbookWriter<ExcelEntity>(stream, _entities!).Save();
+        _entities!.SaveAs(stream);
     }
 
     [Benchmark(Baseline = true)]
