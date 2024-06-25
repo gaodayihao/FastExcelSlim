@@ -1,0 +1,53 @@
+﻿namespace FastExcelSlim.OpenXml;
+
+public static class IndexedColors
+{
+    public const int Black = 8;
+    public const int White = 9;
+    public const int Red = 10;
+    public const int BrightGreen = 11;
+    public const int Blue = 12;
+    public const int Yellow = 13;
+    public const int Pink = 14;
+    public const int Turquoise = 15;
+    public const int DarkRed = 16;
+    public const int Green = 17;
+    public const int DarkBlue = 18;
+    public const int DarkYellow = 19;
+    public const int Violet = 20;
+    public const int Teal = 21;
+    public const int Grey25Percent = 22;
+    public const int Grey50Percent = 23;
+    public const int CornflowerBlue = 24;
+    public const int Maroon = 25;
+    public const int LemonChiffon = 26;
+    public const int Orchid = 28;
+    public const int Coral = 29;
+    public const int RoyalBlue = 30;
+    public const int LightCornflowerBlue = 31;
+    public const int SkyBlue = 40;
+    public const int LightTurquoise = 41;
+    public const int LightGreen = 42;
+    public const int LightYellow = 43;
+    public const int PaleBlue = 44;
+    public const int Rose = 45;
+    public const int Lavender = 46;
+    public const int Tan = 47;
+    public const int LightBlue = 48;
+    public const int Aqua = 49;
+    public const int Lime = 50;
+    public const int Gold = 51;
+    public const int LightOrange = 52;
+    public const int Orange = 53;
+    public const int BlueGrey = 54;
+    public const int Grey40Percent = 55;
+    public const int DarkTeal = 56;
+    public const int SeaGreen = 57;
+    public const int DarkGreen = 58;
+    public const int OliveGreen = 59;
+    public const int Brown = 60;
+    public const int Plum = 61;
+    public const int Indigo = 62;
+    public const int Grey80Percent = 63;
+    public const int Automatic = 64;
+}

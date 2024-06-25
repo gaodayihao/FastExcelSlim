@@ -1,0 +1,9 @@
+<Project>
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<Version>0.1.0</Version>
+		<NoWarn>$(NoWarn);CS1591;CS0436;CS8034;</NoWarn>
+		<RootNamespace>FastExcelSlim</RootNamespace>
+		<TieredPGO>true</TieredPGO>
+	</PropertyGroup>
+</Project>

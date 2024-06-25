@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<IncludeContentInPack>true</IncludeContentInPack>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FastExcelSlim.Core\FastExcelSlim.Core.csproj" />
+		<ProjectReference Include="..\FastExcelSlim.Generator\FastExcelSlim.Generator.csproj" />
+	</ItemGroup>
+
+</Project>
