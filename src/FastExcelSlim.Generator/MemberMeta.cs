@@ -62,45 +62,41 @@ internal class MemberMeta
 
     public string GetColumnName()
     {
-        var propertyAttr = Symbol.GetAttribute(_references.OpenXmlPropertyAttribute);
-        if (propertyAttr is { ConstructorArguments.Length: > 0 })
-        {
-            if (propertyAttr.ConstructorArguments[0].Value is string columnName)
-            {
-                return columnName;
-            }
-        }
-
-        return Name;
+        return GetAttributeNamedArgumentValue<string>(_references.OpenXmlPropertyAttribute, "ColumnName", Name);
     }
 
     public int GetColumnWidth()
     {
-        var propertyAttr = Symbol.GetAttribute(_references.OpenXmlPropertyAttribute);
+        return GetAttributeNamedArgumentValue<int>(_references.OpenXmlPropertyAttribute, "Width", DefaultColumnWidth);
+    }
 
-        if (propertyAttr != null)
+    private T GetAttributeNamedArgumentValue<T>(INamedTypeSymbol attributeSymbol, string argumentName, T defaultValue)
+    {
+        var propertyAttr = Symbol.GetAttribute(attributeSymbol);
+
+        if (propertyAttr is { NamedArguments.IsEmpty: false })
         {
-            switch (propertyAttr.ConstructorArguments.Length)
+            foreach (var kvp in propertyAttr.NamedArguments)
             {
-                case 2:
-                    {
-                        if (propertyAttr.ConstructorArguments[1].Value is int width)
-                        {
-                            return width;
-                        }
-                        break;
-                    }
-                case 1:
-                    {
-                        if (propertyAttr.ConstructorArguments[0].Value is int width)
-                        {
-                            return width;
-                        }
-                        break;
-                    }
+                var argName = kvp.Key;
+                var typedConstant = kvp.Value;
+                if (argName == argumentName && typedConstant.Value is T value)
+                {
+                    return value;
+                }
             }
         }
 
-        return DefaultColumnWidth;
+        return defaultValue;
+    }
+
+    public AttributeData? GetAttribute(INamedTypeSymbol attribute)
+    {
+        return Symbol.GetAttribute(attribute);
+    }
+
+    public bool ContainsAttribute(INamedTypeSymbol attribute)
+    {
+        return Symbol.ContainsAttribute(attribute);
     }
 }

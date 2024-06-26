@@ -11,6 +11,8 @@ internal partial class ExcelEntity
 
     public int Age { get; set; }
 
+    public Gender Gender { get; set; }
+
     public DateTime Birthday { get; set; }
 
     public string? Class { get; set; }
@@ -24,4 +26,11 @@ internal partial class ExcelEntity
     public bool IsOnline { get; set; }
 
     public DateOnly LastOnline { get; set; }
+}
+
+internal enum Gender
+{
+    Male,
+    Female,
+    Other
 }

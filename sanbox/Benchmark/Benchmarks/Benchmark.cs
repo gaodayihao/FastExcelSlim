@@ -60,6 +60,7 @@ public class Benchmark
             CreateCell(row, entity.Name!, ref columnIndex);
             CreateCell(row, entity.GUIId, ref columnIndex);
             CreateCell(row, entity.Age, ref columnIndex);
+            CreateCell(row, entity.Gender, ref columnIndex);
             CreateCell(row, entity.Birthday, ref columnIndex);
             CreateCell(row, entity.Class!, ref columnIndex);
             CreateCell(row, entity.Address!, ref columnIndex);
@@ -82,6 +83,12 @@ public class Benchmark
     {
         var cel = r.CreateCell(cIndex++);
         cel.SetCellValue(value);
+    }
+
+    static void CreateCell<T>(IRow r, T value, ref int cIndex) where T : Enum
+    {
+        var cel = r.CreateCell(cIndex++);
+        cel.SetCellValue(value.ToString("G"));
     }
 
     static void CreateCell(IRow r, DateOnly value, ref int cIndex)
@@ -143,6 +150,7 @@ public class Benchmark
         CreateHeaderCell(row, nameof(ExcelEntity.Name), 15, ref columnIndex);
         CreateHeaderCell(row, nameof(ExcelEntity.GUIId), 15, ref columnIndex);
         CreateHeaderCell(row, nameof(ExcelEntity.Age), 15, ref columnIndex);
+        CreateHeaderCell(row, nameof(ExcelEntity.Gender), 15, ref columnIndex);
         CreateHeaderCell(row, nameof(ExcelEntity.Birthday), 15, ref columnIndex);
         CreateHeaderCell(row, nameof(ExcelEntity.Class), 15, ref columnIndex);
         CreateHeaderCell(row, nameof(ExcelEntity.Address), 15, ref columnIndex);

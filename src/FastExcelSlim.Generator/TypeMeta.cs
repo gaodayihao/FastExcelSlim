@@ -110,9 +110,15 @@ internal class TypeMeta
 
         foreach (var member in Members)
         {
-            if (!_reference.KnownTypes.Contains(member.MemberType))
+            if (member.MemberType.TypeKind != TypeKind.Enum && !_reference.KnownTypes.Contains(member.MemberType))
             {
                 context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberCantSerializeType, member.GetLocation(syntax), Symbol.Name, member.Name, member.MemberType.FullyQualifiedToString()));
+                noError = false;
+            }
+
+            if (member.ContainsAttribute(_reference.OpenXmlEnumFormatAttribute) && member.MemberType.TypeKind != TypeKind.Enum)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberNotAnEnumType, member.GetLocation(syntax), Symbol.Name, member.Name));
                 noError = false;
             }
         }
@@ -188,15 +194,10 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     private string GetSheetName()
     {
         const string nullSheetName = "null";
-
-        var attr = Symbol.GetAttribute(_reference.OpenXmlWritableAttribute)!;
-        var args = attr.ConstructorArguments;
-        if (args.Length == 1)
+        var sheetName = GetAttributeNamedArgumentValue<string?>(_reference.OpenXmlWritableAttribute, "SheetName", null);
+        if (!string.IsNullOrEmpty(sheetName))
         {
-            if (args[0].Value is string sheetName)
-            {
-                return $"\"{sheetName}\"";
-            }
+            return $"\"{sheetName}\"";
         }
 
         return nullSheetName;
@@ -206,7 +207,18 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     {
         for (int i = 0; i < Members.Length; i++)
         {
-            yield return $"{indent}writer.WriteCell(styles, value.{Members[i].Name}, rowIndex, {i + 1}, nameof({Members[i].Name}), ref value);";
+            var member = Members[i];
+            if (member.MemberType.TypeKind == TypeKind.Enum &&
+                member.ContainsAttribute(_reference.OpenXmlEnumFormatAttribute))
+            {
+                var formatAttr = member.GetAttribute(_reference.OpenXmlEnumFormatAttribute);
+                var format = (string)formatAttr!.ConstructorArguments[0].Value!;
+                yield return $"{indent}writer.WriteCell(styles, value.{member.Name}, rowIndex, {i + 1}, nameof({member.Name}), ref value, \"{format}\");";
+            }
+            else
+            {
+                yield return $"{indent}writer.WriteCell(styles, value.{member.Name}, rowIndex, {i + 1}, nameof({member.Name}), ref value);";
+            }
         }
     }
 
@@ -224,6 +236,26 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
         {
             yield return $"{indent}writer.WriteHeader(styles, \"{Members[i].GetColumnName()}\", nameof({Members[i].Name}), {i + 1});";
         }
+    }
+
+    private T GetAttributeNamedArgumentValue<T>(INamedTypeSymbol attributeSymbol, string argumentName, T defaultValue)
+    {
+        var propertyAttr = Symbol.GetAttribute(attributeSymbol);
+
+        if (propertyAttr is { NamedArguments.IsEmpty: false })
+        {
+            foreach (var kvp in propertyAttr.NamedArguments)
+            {
+                var argName = kvp.Key;
+                var typedConstant = kvp.Value;
+                if (argName == argumentName && typedConstant.Value is T value)
+                {
+                    return value;
+                }
+            }
+        }
+
+        return defaultValue;
     }
 
     public override string ToString()

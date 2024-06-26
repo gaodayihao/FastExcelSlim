@@ -30,7 +30,14 @@ demos.SaveToExcel("singleSheet.xlsx");
 //Console.WriteLine($"done cost: {sw.Elapsed.TotalSeconds}s");
 //Console.ReadLine();
 
-[OpenXmlWritable("Demo")]
+public enum Gender
+{
+    Male = 1,
+    Female,
+    Other
+}
+
+[OpenXmlWritable(SheetName = "Demo")]
 public partial class DemoEntity
 {
     [OpenXmlOrder(0)]
@@ -40,19 +47,25 @@ public partial class DemoEntity
     public string? Name { get; set; }
 
     [OpenXmlOrder(1)]
-    [OpenXmlProperty("Student Number", 50)]
+    [OpenXmlProperty(ColumnName = "Student Number", Width = 50)]
     public string? Number { get; set; }
 
     [OpenXmlOrder(3)]
-    [OpenXmlProperty("Gender", 20)]
-    public string? Gender { get; set; }
+    [OpenXmlProperty(ColumnName = "Gender", Width = 20)]
+    [OpenXmlEnumFormat("G")]
+    public Gender Gender { get; set; }
 
     [OpenXmlOrder(4)]
-    [OpenXmlProperty("Age")]
-    private int? _age = 5;
+    [OpenXmlProperty(ColumnName = "Gender Value", Width = 20)]
+    [OpenXmlEnumFormat("D")]
+    private Gender NumberFormatGender => Gender;
 
     [OpenXmlOrder(5)]
-    [OpenXmlProperty(35)]
+    [OpenXmlProperty(ColumnName = "Age")]
+    private int? _age = 5;
+
+    [OpenXmlOrder(6)]
+    [OpenXmlProperty(Width = 35)]
     public DateTime BirthDay { get; set; }
 
     [OpenXmlIgnore]

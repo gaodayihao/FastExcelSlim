@@ -46,11 +46,18 @@ internal static class DiagnosticDescriptors
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);
 
-
     public static readonly DiagnosticDescriptor MemberCantSerializeType = new(
         id: "FES006",
         title: "Member can't serialize type",
         messageFormat: "The OpenXmlWritable object '{0}' member '{1}' type is '{2}' that can't serialize",
+        category: Category,
+        defaultSeverity: DiagnosticSeverity.Error,
+        isEnabledByDefault: true);
+
+    public static readonly DiagnosticDescriptor MemberNotAnEnumType = new(
+        id: "FES007",
+        title: "Member not an enum",
+        messageFormat: "The OpenXmlWritable object '{0}' member '{1}' type is not an enum but announce OpenXmlEnumFormatAttribute",
         category: Category,
         defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true);

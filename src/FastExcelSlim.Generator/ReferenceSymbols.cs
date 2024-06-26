@@ -12,6 +12,7 @@ internal class ReferenceSymbols
         OpenXmlPropertyAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlPropertyAttribute");
         OpenXmlIgnoreAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlIgnoreAttribute");
         OpenXmlOrderAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlOrderAttribute");
+        OpenXmlEnumFormatAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlEnumFormatAttribute");
 
         KnownTypes = new WellKnownTypes(this);
     }
@@ -22,6 +23,7 @@ internal class ReferenceSymbols
     public INamedTypeSymbol OpenXmlPropertyAttribute { get; }
     public INamedTypeSymbol OpenXmlIgnoreAttribute { get; }
     public INamedTypeSymbol OpenXmlOrderAttribute { get; }
+    public INamedTypeSymbol OpenXmlEnumFormatAttribute { get; }
 
     public WellKnownTypes KnownTypes { get; }
 

@@ -6,7 +6,7 @@ using Utf8StringInterpolation;
 
 namespace FastExcelSlim.Extensions;
 
-internal static partial class Utf8StringWriterExtensions
+public static partial class Utf8StringWriterExtensions
 {
     public static void EncodeXml<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, string? xml) where TBufferWriter : IBufferWriter<byte>
     {

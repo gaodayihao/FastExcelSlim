@@ -141,6 +141,22 @@ static partial class Utf8StringWriterExtensions
         writer.AppendLiteral("</v></c>");
     }
 
+    public static void WriteCell<TBufferWriter, T, TValue>(
+        this scoped ref Utf8StringWriter<TBufferWriter> writer,
+        OpenXmlStyles styles,
+        TValue? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity, string format = "G")
+        where T : IOpenXmlWritable<T>
+        where TBufferWriter : IBufferWriter<byte>
+        where TValue : Enum
+    {
+        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, ref entity);
+        writer.AppendLiteral("<c r=\"");
+        writer.ConvertXYToCellReference(columnIndex, rowIndex);
+        writer.AppendLiteral("\" t=\"str\"");
+        writer.WriteAttribute("s", styleIndex);
+        writer.AppendFormat($"><v>{value?.ToString(format) ?? string.Empty}</v></c>");
+    }
+
 <# foreach(var type in formatterTypes) { #>
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
