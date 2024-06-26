@@ -7,7 +7,7 @@ static partial class Utf8StringWriterExtensions
 {
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         string? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -25,7 +25,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         bool? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -46,7 +46,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         Guid? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -77,7 +77,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         DateOnly? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -98,7 +98,7 @@ static partial class Utf8StringWriterExtensions
     
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         TimeOnly? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -113,7 +113,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         DateTime? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -134,7 +134,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         byte? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -149,7 +149,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         decimal? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -164,7 +164,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         double? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -179,7 +179,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         short? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -194,7 +194,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         int? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -209,7 +209,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         long? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -224,7 +224,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         sbyte? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -239,7 +239,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         float? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -254,7 +254,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         ushort? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -269,7 +269,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         uint? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
@@ -284,7 +284,7 @@ static partial class Utf8StringWriterExtensions
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<T> styles,
+        OpenXmlStyles styles,
         ulong? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>

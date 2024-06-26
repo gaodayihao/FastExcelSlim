@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+﻿using System.Collections.Immutable;
 using Utf8StringInterpolation;
 
 namespace FastExcelSlim.OpenXml;
@@ -7,11 +7,12 @@ internal class OpenXmlWorkbook
 {
     private readonly List<OpenXmlSheet> _sheets = new(1);
 
-    public OpenXmlSheet<T> CreateSheet<T>(IEnumerable<T> values, OpenXmlStyles<T> styles)
+    public ImmutableArray<OpenXmlSheet> Sheets => _sheets.ToImmutableArray();
+
+    public void CreateSheet<T>(IEnumerable<T> values, OpenXmlStyles styles)
     {
         var sheet = new OpenXmlSheet<T>(_sheets.Count + 1, values, styles);
         _sheets.Add(sheet);
-        return sheet;
     }
 
     public void WriteRelationships(scoped ref ZipEntryWriterWrapper wrapper)

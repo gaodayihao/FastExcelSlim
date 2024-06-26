@@ -93,7 +93,7 @@ internal sealed class ErrorOpenXmlFormatter<T> : IOpenXmlFormatter<T>
         _message = message;
     }
 
-    public void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles<T> styles, int rowIndex, scoped ref T value) where TBufferWriter : IBufferWriter<byte>
+    public void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex, scoped ref T value) where TBufferWriter : IBufferWriter<byte>
     {
         Throw();
     }
@@ -103,7 +103,7 @@ internal sealed class ErrorOpenXmlFormatter<T> : IOpenXmlFormatter<T>
         Throw();
     }
 
-    public void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles<T> styles) where TBufferWriter : IBufferWriter<byte>
+    public void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles) where TBufferWriter : IBufferWriter<byte>
     {
         Throw();
     }

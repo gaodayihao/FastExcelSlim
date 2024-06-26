@@ -52,17 +52,17 @@ public class Benchmark
         GenerateHeaders(workbook, sheet);
 
         var rowIndex = 1;
-        foreach (var entity in _entities)
+        foreach (var entity in _entities!)
         {
             var columnIndex = 0;
             var row = sheet.CreateRow(rowIndex++);
             CreateCell(row, entity.Id, ref columnIndex);
-            CreateCell(row, entity.Name, ref columnIndex);
+            CreateCell(row, entity.Name!, ref columnIndex);
             CreateCell(row, entity.GUIId, ref columnIndex);
             CreateCell(row, entity.Age, ref columnIndex);
             CreateCell(row, entity.Birthday, ref columnIndex);
-            CreateCell(row, entity.Class, ref columnIndex);
-            CreateCell(row, entity.Address, ref columnIndex);
+            CreateCell(row, entity.Class!, ref columnIndex);
+            CreateCell(row, entity.Address!, ref columnIndex);
             CreateCell(row, entity.Deposit, ref columnIndex);
             CreateCell(row, entity.Friends, ref columnIndex);
             CreateCell(row, entity.IsOnline, ref columnIndex);

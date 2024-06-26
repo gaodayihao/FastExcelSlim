@@ -1,25 +1,38 @@
-﻿using System.Diagnostics;
-using Dapper;
+﻿using AutoFixture;
 using FastExcelSlim;
-using MySql.Data.MySqlClient;
+using FastExcelSlim.OpenXml;
 
-Console.WriteLine("press enter to start");
-Console.ReadLine();
-Console.WriteLine("start");
-const string connectionString = "Database=dev;Data Source=dev0010001;User Id=dev;Password=DEV@user12345;pooling=false;CharSet=utf8;port=3306;";
-using var dbConnection = new MySqlConnection(connectionString);
-dbConnection.Open();
-//dbConnection.Execute("insert into Students(Name,Number,Gender) values (@Name,@Number,@Gender);", students);
+var fixture = new Fixture();
+var demos = fixture.Build<DemoEntity>().CreateMany(1000);
+var students = fixture.Build<Student>().CreateMany(5000);
 
-var students = dbConnection.Query<Student>(new CommandDefinition("select * from Students", flags: CommandFlags.NoCache));
+var stream = File.Open("sandbox.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+var writer = new OpenXmlWorkbookWriter(stream);
+writer.CreateSheet(demos);
+writer.CreateSheet(students);
+writer.Save();
+stream.Dispose();
 
-var sw = new Stopwatch();
-sw.Start();
-students.SaveAs("students.xlsx");
-GC.Collect();
-sw.Stop();
-Console.WriteLine($"done cost: {sw.Elapsed.TotalSeconds}s");
-Console.ReadLine();
+demos = fixture.Build<DemoEntity>().CreateMany(1000);
+demos.SaveAs("singleSheet.xlsx");
+
+//Console.WriteLine("press enter to start");
+//Console.ReadLine();
+//Console.WriteLine("start");
+//const string connectionString = "Database=dev;Data Source=dev0010001;User Id=dev;Password=Password;pooling=false;CharSet=utf8;port=3306;";
+//using var dbConnection = new MySqlConnection(connectionString);
+//dbConnection.Open();
+////dbConnection.Execute("insert into Students(Name,Number,Gender) values (@Name,@Number,@Gender);", students);
+
+//var students = dbConnection.Query<Student>(new CommandDefinition("select * from Students", flags: CommandFlags.NoCache));
+
+//var sw = new Stopwatch();
+//sw.Start();
+//students.SaveAs("students.xlsx");
+//GC.Collect();
+//sw.Stop();
+//Console.WriteLine($"done cost: {sw.Elapsed.TotalSeconds}s");
+//Console.ReadLine();
 
 [OpenXmlWritable("Demo")]
 public partial class DemoEntity
@@ -40,7 +53,7 @@ public partial class DemoEntity
 
     [OpenXmlOrder(4)]
     [OpenXmlProperty("Age")]
-    private int? _age;
+    private int? _age = 5;
 
     [OpenXmlOrder(5)]
     [OpenXmlProperty(35)]

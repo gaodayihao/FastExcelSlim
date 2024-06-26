@@ -162,7 +162,7 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
 
     public static void WriteCell<TBufferWriter>(
         {{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer,
-        global::FastExcelSlim.OpenXmlStyles<{{TypeName}}> styles,
+        global::FastExcelSlim.OpenXmlStyles styles,
         int rowIndex,
         {{scopedRef}} {{TypeName}} value) {{constraint}}
     {
@@ -177,7 +177,7 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     
     public static void WriteHeaders<TBufferWriter>
         ({{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer,
-        global::FastExcelSlim.OpenXmlStyles<{{Symbol.Name}}> styles) {{constraint}}
+        global::FastExcelSlim.OpenXmlStyles styles) {{constraint}}
     {
 {{EmitWriteHeaders("        ").NewLine()}}
     }

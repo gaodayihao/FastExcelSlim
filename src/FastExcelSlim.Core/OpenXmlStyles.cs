@@ -8,6 +8,14 @@ public abstract class OpenXmlStyles
 {
     protected StyleTable StyleTable { get; } = new();
 
+    protected const int DefaultCellStyleIndex = 0;
+
+    public abstract int GetCellStyleIndex<T>(string propertyName, scoped ref T entity);
+
+    public abstract int GetHeaderStyleIndex(string propertyName);
+
+    public abstract int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity);
+
     internal void Write<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer)
         where TBufferWriter : IBufferWriter<byte>
     {
@@ -15,30 +23,21 @@ public abstract class OpenXmlStyles
     }
 }
 
-public abstract class OpenXmlStyles<T> : OpenXmlStyles
+public class DefaultStyles : OpenXmlStyles
 {
-    protected const int DefaultCellStyleIndex = 0;
+    public static readonly DefaultStyles Instance = new();
 
-    public abstract int GetCellStyleIndex(string propertyName, scoped ref T entity);
-
-    public abstract int GetHeaderStyleIndex(string propertyName);
-
-    public abstract int GetDateTimeCellStyleIndex(string propertyName, scoped ref T entity);
-}
-
-public class DefaultStyles<T> : OpenXmlStyles<T>
-{
     public CellStyle DefaultHeaderStyle { get; set; }
     protected CellStyle DefaultDateTimeCellStyle { get; set; }
 
-    public DefaultStyles()
+    private DefaultStyles()
     {
         // ReSharper disable VirtualMemberCallInConstructor
         DefaultDateTimeCellStyle = CreateDefaultDateTimeStyle();
         DefaultHeaderStyle = CreateDefaultHeaderStyle();
     }
 
-    public override int GetCellStyleIndex(string propertyName, scoped ref T entity)
+    public override int GetCellStyleIndex<T>(string propertyName, scoped ref T entity)
     {
         return DefaultCellStyleIndex;
     }
@@ -48,7 +47,7 @@ public class DefaultStyles<T> : OpenXmlStyles<T>
         return DefaultHeaderStyle.Id;
     }
 
-    public override int GetDateTimeCellStyleIndex(string propertyName, scoped ref T entity)
+    public override int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity)
     {
         return DefaultDateTimeCellStyle.Id;
     }

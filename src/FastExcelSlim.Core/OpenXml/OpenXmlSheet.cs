@@ -1,5 +1,4 @@
-﻿using System.Buffers;
-using Utf8StringInterpolation;
+﻿using Utf8StringInterpolation;
 
 namespace FastExcelSlim.OpenXml;
 
@@ -7,19 +6,21 @@ internal abstract class OpenXmlSheet(int id)
 {
     public int Id { get; } = id;
 
-    public string Name { get; protected set; }
+    public abstract string Name { get; }
 
     public string Path => $"xl/worksheets/sheet{Id}.xml";
+
+    public abstract void Write(scoped ref ZipEntryWriterWrapper wrapper);
 }
 
 internal class OpenXmlSheet<T> : OpenXmlSheet
 {
     private readonly IEnumerable<T> _values;
-    private readonly OpenXmlStyles<T> _styles;
+    private readonly OpenXmlStyles _styles;
     private readonly SheetDimension _sheetDimension;
     private readonly IOpenXmlFormatter<T> _formatter;
 
-    public OpenXmlSheet(int id, IEnumerable<T> values, OpenXmlStyles<T> styles) : base(id)
+    public OpenXmlSheet(int id, IEnumerable<T> values, OpenXmlStyles styles) : base(id)
     {
         _values = values;
         _styles = styles;
@@ -36,7 +37,9 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
         Name = _formatter.SheetName ?? $"sheet{id}";
     }
 
-    public void Write(scoped ref ZipEntryWriterWrapper wrapper)
+    public override string Name { get; }
+
+    public override void Write(scoped ref ZipEntryWriterWrapper wrapper)
     {
         wrapper.Writer.AppendLiteral(ExcelXml.SheetStart);
         _sheetDimension.Write(ref wrapper.Writer);

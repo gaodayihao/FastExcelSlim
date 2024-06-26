@@ -32,13 +32,12 @@ internal static partial class Utf8StringWriterExtensions
         }
     }
 
-    public static void WriteHeader<TBufferWriter, TEntity>(this scoped ref Utf8StringWriter<TBufferWriter> writer,
-        OpenXmlStyles<TEntity> styles,
+    public static void WriteHeader<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer,
+        OpenXmlStyles styles,
         string headerName,
         string propertyName,
         int columnIndex)
         where TBufferWriter : IBufferWriter<byte>
-        where TEntity : IOpenXmlWritable<TEntity>
     {
         const int headerRow = 1;
         var styleIndex = styles.GetHeaderStyleIndex(propertyName);

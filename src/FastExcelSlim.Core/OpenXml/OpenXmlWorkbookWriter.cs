@@ -6,27 +6,21 @@ using Utf8StringInterpolation;
 
 namespace FastExcelSlim.OpenXml;
 
-internal class OpenXmlWorkbookWriter
+public class OpenXmlWorkbookWriter(Stream stream, OpenXmlStyles? styles)
 {
     protected static readonly UTF8Encoding UTF8WithBom = new(true);
-}
-
-internal class OpenXmlWorkbookWriter<T> : OpenXmlWorkbookWriter
-{
-    private readonly IEnumerable<T> _values;
-    private readonly ZipArchive _archive;
-    private readonly OpenXmlStyles<T> _styles;
+    private readonly ZipArchive _archive = new(stream, ZipArchiveMode.Update, true, UTF8WithBom);
+    private readonly OpenXmlStyles _styles = styles ?? DefaultStyles.Instance;
     private readonly Dictionary<string, string> _zipEntries = new();
+    private readonly OpenXmlWorkbook _workbook = new();
 
-    internal OpenXmlWorkbookWriter(Stream stream, IEnumerable<T> values) : this(stream, values, null)
+    public OpenXmlWorkbookWriter(Stream stream) : this(stream, null)
     {
     }
 
-    internal OpenXmlWorkbookWriter(Stream stream, IEnumerable<T> values, OpenXmlStyles<T>? styles)
+    public void CreateSheet<T>(IEnumerable<T> values)
     {
-        _styles = styles ?? new DefaultStyles<T>();
-        _values = values;
-        _archive = new(stream, ZipArchiveMode.Update, true, UTF8WithBom);
+        _workbook.CreateSheet(values, _styles);
     }
 
     public void Save()
@@ -72,7 +66,7 @@ internal class OpenXmlWorkbookWriter<T> : OpenXmlWorkbookWriter
         CreateZipEntry(ExcelFilePath.ExtendedProperties, ExcelXml.ExtendedProperties, ExcelContentTypes.ExtendedProperties);
 
         var wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.CustomProperties, ExcelContentTypes.CustomProperties);
-        wrapper.Writer.AppendFormat($"{ExcelXml.CustomPropertiesStart}{typeof(OpenXmlWorkbookWriter<>).Assembly.GetName().Version!.ToString(3)}{ExcelXml.CustomPropertiesEnd}");
+        wrapper.Writer.AppendFormat($"{ExcelXml.CustomPropertiesStart}{typeof(OpenXmlWorkbookWriter).Assembly.GetName().Version!.ToString(3)}{ExcelXml.CustomPropertiesEnd}");
         wrapper.Dispose();
 
         wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.CoreProperties, ExcelContentTypes.CoreProperties);
@@ -88,20 +82,22 @@ internal class OpenXmlWorkbookWriter<T> : OpenXmlWorkbookWriter
 
     internal void GenerateWorkbookOpenXml()
     {
-        var workbook = new OpenXmlWorkbook();
-        var sheet = workbook.CreateSheet(_values, _styles);
+        {
+            var wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.WorkbookRelationships);
+            _workbook.WriteRelationships(ref wrapper);
+            wrapper.Dispose();
 
-        var wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.WorkbookRelationships);
-        workbook.WriteRelationships(ref wrapper);
-        wrapper.Dispose();
+            wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.Workbook, ExcelContentTypes.Workbook);
+            _workbook.Write(ref wrapper);
+            wrapper.Dispose();
+        }
 
-        wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.Workbook, ExcelContentTypes.Workbook);
-        workbook.Write(ref wrapper);
-        wrapper.Dispose();
-
-        wrapper = CreateZipEntryWriterWrapper(sheet.Path, ExcelContentTypes.Worksheet);
-        sheet.Write(ref wrapper);
-        wrapper.Dispose();
+        foreach (var sheet in _workbook.Sheets)
+        {
+            var wrapper = CreateZipEntryWriterWrapper(sheet.Path, ExcelContentTypes.Worksheet);
+            sheet.Write(ref wrapper);
+            wrapper.Dispose();
+        }
     }
 
     internal void GenerateContentTypes()
