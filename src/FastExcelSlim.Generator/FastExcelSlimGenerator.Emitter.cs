@@ -7,7 +7,7 @@ namespace FastExcelSlim.Generator;
 
 public partial class FastExcelSlimGenerator
 {
-    static void Generate(TypeDeclarationSyntax syntax, Compilation compilation, string? serializationInfoLogDirectoryPath, IGeneratorContext context)
+    static void Generate(TypeDeclarationSyntax syntax, Compilation compilation, IGeneratorContext context)
     {
         var semanticModel = compilation.GetSemanticModel(syntax.SyntaxTree);
 

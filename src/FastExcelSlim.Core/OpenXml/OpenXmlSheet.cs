@@ -3,27 +3,28 @@ using Utf8StringInterpolation;
 
 namespace FastExcelSlim.OpenXml;
 
-internal abstract class OpenXmlSheet(int id, string name)
+internal abstract class OpenXmlSheet(int id)
 {
     public int Id { get; } = id;
 
-    public string Name { get; } = name;
+    public string Name { get; protected set; }
 
     public string Path => $"xl/worksheets/sheet{Id}.xml";
 }
 
-internal class OpenXmlSheet<T> : OpenXmlSheet where T : IOpenXmlWritable<T>
+internal class OpenXmlSheet<T> : OpenXmlSheet
 {
     private readonly IEnumerable<T> _values;
     private readonly OpenXmlStyles<T> _styles;
     private readonly SheetDimension _sheetDimension;
     private readonly IOpenXmlFormatter<T> _formatter;
 
-    public OpenXmlSheet(int id, IEnumerable<T> values, OpenXmlStyles<T> styles) : base(id, GetSheetName(id))
+    public OpenXmlSheet(int id, IEnumerable<T> values, OpenXmlStyles<T> styles) : base(id)
     {
         _values = values;
         _styles = styles;
-        var maxColumn = T.ColumnCount;
+        _formatter = OpenXmlFormatterProvider.GetFormatter<T>();
+        var maxColumn = _formatter.ColumnCount;
         var maxRow = 1;
         if (values is ICollection<T> collection)
         {
@@ -32,12 +33,7 @@ internal class OpenXmlSheet<T> : OpenXmlSheet where T : IOpenXmlWritable<T>
 
         _sheetDimension = new SheetDimension(maxRow, maxColumn);
 
-        _formatter = OpenXmlFormatterProvider.GetFormatter<T>();
-    }
-
-    private static string GetSheetName(int id)
-    {
-        return T.SheetName ?? $"sheet{id}";
+        Name = _formatter.SheetName ?? $"sheet{id}";
     }
 
     public void Write(scoped ref ZipEntryWriterWrapper wrapper)

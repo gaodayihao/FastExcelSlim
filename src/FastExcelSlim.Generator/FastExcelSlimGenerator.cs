@@ -39,17 +39,6 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
 
     private void RegisterFastExcelSlim(IncrementalGeneratorInitializationContext context)
     {
-        var logProvider = context.AnalyzerConfigOptionsProvider
-            .Select((configOptions, token) =>
-            {
-                if (configOptions.GlobalOptions.TryGetValue("build_property.FastExcelSlimGenerator_SerializationInfoOutputDirectory", out var path))
-                {
-                    return path;
-                }
-
-                return null;
-            });
-
         var typeDeclarations = context.SyntaxProvider.ForAttributeWithMetadataName(
             OpenXmlWritableAttributeFullName,
             predicate: static (node, _) => node is ClassDeclarationSyntax
@@ -67,16 +56,14 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
         var source = typeDeclarations
             .Combine(context.CompilationProvider)
             .WithComparer(Comparer.Instance)
-            .Combine(logProvider)
             .Combine(parseOptions);
 
         context.RegisterSourceOutput(source, static (context, source) =>
         {
-            var (typeDeclaration, compilation) = source.Left.Left;
-            var logPath = source.Left.Right;
+            var (typeDeclaration, compilation) = source.Left;
             var langVersion = source.Right;
 
-            Generate(typeDeclaration, compilation, logPath, new GeneratorContext(context, langVersion));
+            Generate(typeDeclaration, compilation, new GeneratorContext(context, langVersion));
         });
     }
 

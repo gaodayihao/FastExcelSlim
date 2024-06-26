@@ -108,6 +108,10 @@ internal sealed class ErrorOpenXmlFormatter<T> : IOpenXmlFormatter<T>
         Throw();
     }
 
+    public int ColumnCount => 1;
+
+    public string? SheetName => default;
+
     [DoesNotReturn]
     private void Throw()
     {

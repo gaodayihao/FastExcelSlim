@@ -10,6 +10,10 @@ public interface IOpenXmlFormatter<T>
     void WriteColumns<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer) where TBufferWriter : IBufferWriter<byte>;
 
     void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles<T> styles) where TBufferWriter : IBufferWriter<byte>;
+
+    int ColumnCount { get; }
+
+    string? SheetName { get; }
 }
 
 public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXmlWritable<T>
@@ -28,4 +32,8 @@ public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXm
     {
         T.WriteHeaders(ref writer, styles);
     }
+
+    public int ColumnCount => T.ColumnCount;
+
+    public string? SheetName => T.SheetName;
 }

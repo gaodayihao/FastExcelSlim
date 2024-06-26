@@ -8,7 +8,6 @@ internal class OpenXmlWorkbook
     private readonly List<OpenXmlSheet> _sheets = new(1);
 
     public OpenXmlSheet<T> CreateSheet<T>(IEnumerable<T> values, OpenXmlStyles<T> styles)
-        where T : IOpenXmlWritable<T>
     {
         var sheet = new OpenXmlSheet<T>(_sheets.Count + 1, values, styles);
         _sheets.Add(sheet);

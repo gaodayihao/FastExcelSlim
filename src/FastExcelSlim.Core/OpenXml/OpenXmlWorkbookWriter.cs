@@ -11,7 +11,7 @@ internal class OpenXmlWorkbookWriter
     protected static readonly UTF8Encoding UTF8WithBom = new(true);
 }
 
-internal class OpenXmlWorkbookWriter<T> : OpenXmlWorkbookWriter where T : IOpenXmlWritable<T>
+internal class OpenXmlWorkbookWriter<T> : OpenXmlWorkbookWriter
 {
     private readonly IEnumerable<T> _values;
     private readonly ZipArchive _archive;
