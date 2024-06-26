@@ -10,6 +10,7 @@ public interface IGeneratorContext
     void ReportDiagnostic(Diagnostic diagnostic);
     void AddSource(string hintName, string source);
     LanguageVersion LanguageVersion { get; }
+    bool IsNet7OrGreater { get; }
 }
 
 public static class GeneratorContextExtensions

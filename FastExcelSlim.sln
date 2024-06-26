@@ -13,15 +13,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sandbox", "sandbox", "{F43E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastExcelSlim.Core", "src\FastExcelSlim.Core\FastExcelSlim.Core.csproj", "{EE4CD2BF-D6F4-496B-912B-4C01D91B809D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastExcelSlim.Generator", "src\FastExcelSlim.Generator\FastExcelSlim.Generator.csproj", "{9142E1B6-A7C4-42AA-846B-F9DC520A8869}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastExcelSlim.Generator", "src\FastExcelSlim.Generator\FastExcelSlim.Generator.csproj", "{9142E1B6-A7C4-42AA-846B-F9DC520A8869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastExcelSlim", "src\FastExcelSlim\FastExcelSlim.csproj", "{E434965A-BA3D-42AC-BADC-33B64D552C5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FastExcelSlim", "src\FastExcelSlim\FastExcelSlim.csproj", "{E434965A-BA3D-42AC-BADC-33B64D552C5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxConsoleApp", "sanbox\SandboxConsoleApp\SandboxConsoleApp.csproj", "{7674D73C-2085-4D0D-9212-2923568BAEB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SandboxConsoleApp", "sanbox\SandboxConsoleApp\SandboxConsoleApp.csproj", "{7674D73C-2085-4D0D-9212-2923568BAEB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "sanbox\Benchmark\Benchmark.csproj", "{3C4638E6-1DB8-44B1-8B96-C570A54D514B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Benchmark", "sanbox\Benchmark\Benchmark.csproj", "{3C4638E6-1DB8-44B1-8B96-C570A54D514B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DD4F42BA-6368-4F42-A056-FC87D1CA51E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxNet6", "sanbox\SandboxNet6\SandboxNet6.csproj", "{B86B7621-11B5-48FD-9628-68C9DFE9AE18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{3C4638E6-1DB8-44B1-8B96-C570A54D514B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C4638E6-1DB8-44B1-8B96-C570A54D514B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C4638E6-1DB8-44B1-8B96-C570A54D514B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B86B7621-11B5-48FD-9628-68C9DFE9AE18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B86B7621-11B5-48FD-9628-68C9DFE9AE18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B86B7621-11B5-48FD-9628-68C9DFE9AE18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B86B7621-11B5-48FD-9628-68C9DFE9AE18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{E434965A-BA3D-42AC-BADC-33B64D552C5E} = {DD4F42BA-6368-4F42-A056-FC87D1CA51E0}
 		{7674D73C-2085-4D0D-9212-2923568BAEB7} = {F43E0215-4EB8-4B79-A376-A8EB352344DD}
 		{3C4638E6-1DB8-44B1-8B96-C570A54D514B} = {F43E0215-4EB8-4B79-A376-A8EB352344DD}
+		{B86B7621-11B5-48FD-9628-68C9DFE9AE18} = {F43E0215-4EB8-4B79-A376-A8EB352344DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CFC3816-89AA-4755-8E3B-0F0AA930CD5D}

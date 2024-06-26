@@ -49,8 +49,9 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
         var parseOptions = context.ParseOptionsProvider.Select((parseOptions, _) =>
         {
             var csOptions = (CSharpParseOptions)parseOptions;
-            var lanVersion = csOptions.LanguageVersion;
-            return lanVersion;
+            var langVersion = csOptions.LanguageVersion;
+            var net7 = csOptions.PreprocessorSymbolNames.Contains("NET7_0_OR_GREATER");
+            return (lanVersion: langVersion, net7);
         });
 
         var source = typeDeclarations
@@ -61,9 +62,9 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(source, static (context, source) =>
         {
             var (typeDeclaration, compilation) = source.Left;
-            var langVersion = source.Right;
+            var (langVersion, net7) = source.Right;
 
-            Generate(typeDeclaration, compilation, new GeneratorContext(context, langVersion));
+            Generate(typeDeclaration, compilation, new GeneratorContext(context, langVersion, net7));
         });
     }
 
@@ -86,15 +87,18 @@ public partial class FastExcelSlimGenerator : IIncrementalGenerator
     {
         private readonly SourceProductionContext _context;
 
-        public GeneratorContext(SourceProductionContext context, LanguageVersion languageVersion)
+        public GeneratorContext(SourceProductionContext context, LanguageVersion languageVersion, bool isNet70OrGreater)
         {
             _context = context;
             LanguageVersion = languageVersion;
+            IsNet7OrGreater = isNet70OrGreater;
         }
 
         public CancellationToken CancellationToken => _context.CancellationToken;
 
         public LanguageVersion LanguageVersion { get; }
+
+        public bool IsNet7OrGreater { get; }
 
         public void AddSource(string hintName, string source)
         {

@@ -24,7 +24,7 @@ public partial class FastExcelSlimGenerator
             return;
         }
 
-        var reference = new ReferenceSymbols(compilation);
+        var reference = new ReferenceSymbols(compilation, context);
 
         var typeMeta = new TypeMeta(reference, typeSymbol);
 

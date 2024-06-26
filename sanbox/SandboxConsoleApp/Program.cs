@@ -1,5 +1,7 @@
-﻿using AutoFixture;
+﻿using System.Buffers;
+using AutoFixture;
 using FastExcelSlim;
+using Utf8StringInterpolation;
 
 var fixture = new Fixture();
 var demos = fixture.Build<DemoEntity>().CreateMany(1000);

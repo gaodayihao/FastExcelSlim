@@ -1,19 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net8.0;net7.0</TargetFrameworks>
+		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>10.0</LangVersion>
 		<Nullable>enable</Nullable>
-		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="AutoFixture" Version="5.0.0-preview0011" />
-	  <PackageReference Include="Dapper" Version="2.1.35" />
-	  <PackageReference Include="MySql.Data" Version="8.4.0" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\FastExcelSlim.Core\FastExcelSlim.Core.csproj" />

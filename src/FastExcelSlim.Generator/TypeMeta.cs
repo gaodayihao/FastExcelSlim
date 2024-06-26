@@ -69,6 +69,21 @@ internal class TypeMeta
             noError = false;
         }
 
+        foreach (var member in Members)
+        {
+            if (member.MemberType.TypeKind != TypeKind.Enum && !_reference.KnownTypes.Contains(member.MemberType))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberCantSerializeType, member.GetLocation(syntax), Symbol.Name, member.Name, member.MemberType.FullyQualifiedToString()));
+                noError = false;
+            }
+
+            if (member.ContainsAttribute(_reference.OpenXmlEnumFormatAttribute) && member.MemberType.TypeKind != TypeKind.Enum)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberNotAnEnumType, member.GetLocation(syntax), Symbol.Name, member.Name));
+                noError = false;
+            }
+        }
+
         //order
         if (Members.Any(m => m.HasExplicitOrder))
         {
@@ -79,6 +94,7 @@ internal class TypeMeta
                     context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.AllMembersMustAnnotateOrder, item.GetLocation(syntax), Symbol.Name, item.Name));
                 }
                 noError = false;
+                goto RETURN;
             }
         }
 
@@ -96,6 +112,8 @@ internal class TypeMeta
             }
         }
 
+        if (!noError) goto RETURN;
+
         var expectedOrder = 0;
         foreach (var member in Members)
         {
@@ -108,27 +126,12 @@ internal class TypeMeta
             expectedOrder++;
         }
 
-        foreach (var member in Members)
-        {
-            if (member.MemberType.TypeKind != TypeKind.Enum && !_reference.KnownTypes.Contains(member.MemberType))
-            {
-                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberCantSerializeType, member.GetLocation(syntax), Symbol.Name, member.Name, member.MemberType.FullyQualifiedToString()));
-                noError = false;
-            }
-
-            if (member.ContainsAttribute(_reference.OpenXmlEnumFormatAttribute) && member.MemberType.TypeKind != TypeKind.Enum)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.MemberNotAnEnumType, member.GetLocation(syntax), Symbol.Name, member.Name));
-                noError = false;
-            }
-        }
-
+    RETURN:
         return noError;
     }
 
     public void Emit(StringBuilder writer, IGeneratorContext context)
     {
-
         var classOrStructOrRecord = (IsRecord, IsValueType) switch
         {
             (true, true) => "record struct",
@@ -137,58 +140,122 @@ internal class TypeMeta
             (false, false) => "class",
         };
 
+        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, registerBody, registerT, constraint;
         var scopedRef = (context.IsCSharp11OrGreater())
             ? "scoped ref"
             : "ref";
 
-        const string constraint = "where TBufferWriter : System.Buffers.IBufferWriter<byte>";
+        if (!context.IsNet7OrGreater)
+        {
+            staticReturnVoidMethod = "internal static void ";
+            staticReturnIntMethod = "internal static int ";
+            staticReturnStringMethod = "internal static string? ";
+            registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new {Symbol.Name}Formatter());";
+            registerT = "RegisterFormatter();";
+            constraint = " where TBufferWriter : System.Buffers.IBufferWriter<byte>";
+        }
+        else
+        {
+            staticReturnVoidMethod = $"static void IOpenXmlWritable<{TypeName}>.";
+            staticReturnIntMethod = $"static int IOpenXmlWritable<{TypeName}>.";
+            staticReturnStringMethod = $"static string? IOpenXmlWritable<{TypeName}>.";
+            registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new global::FastExcelSlim.OpenXmlFormatter<{TypeName}>());";
+            registerT = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register<{TypeName}>();";
+            constraint = string.Empty;
+        }
 
         writer.AppendLine($$"""
 partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
 {
-    public static int ColumnCount => {{Members.Length}};
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnIntMethod}}ColumnCount => {{Members.Length}};
 
-    public static string? SheetName => {{GetSheetName()}};
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnStringMethod}}SheetName => {{GetSheetName()}};
 
     static partial void StaticConstructor();
 
     static {{Symbol.Name}}()
     {
-        global::FastExcelSlim.OpenXmlFormatterProvider.Register<{{TypeName}}>();
+        {{registerT}}
         StaticConstructor();
     }
-
-    public static void RegisterFormatter()
+    
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnVoidMethod}}RegisterFormatter()
     {
         if (!global::FastExcelSlim.OpenXmlFormatterProvider.IsRegistered<{{TypeName}}>())
         {
-            global::FastExcelSlim.OpenXmlFormatterProvider.Register(new global::FastExcelSlim.OpenXmlFormatter<{{TypeName}}>());
+            {{registerBody}}
         }
     }
 
-    public static void WriteCell<TBufferWriter>(
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnVoidMethod}}WriteCell<TBufferWriter>(
         {{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer,
         global::FastExcelSlim.OpenXmlStyles styles,
         int rowIndex,
-        {{scopedRef}} {{TypeName}} value) {{constraint}}
+        {{scopedRef}} {{TypeName}} value){{constraint}}
     {
 {{EmitWriteCell("        ").NewLine()}}
     }
     
-    public static void WriteColumns<TBufferWriter>(
-        {{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer) {{constraint}}
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnVoidMethod}}WriteColumns<TBufferWriter>(
+        {{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer){{constraint}}
     {
 {{EmitWriteColumns("        ").NewLine()}}
     }
     
-    public static void WriteHeaders<TBufferWriter>
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnVoidMethod}}WriteHeaders<TBufferWriter>
         ({{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer,
-        global::FastExcelSlim.OpenXmlStyles styles) {{constraint}}
+        global::FastExcelSlim.OpenXmlStyles styles){{constraint}}
     {
 {{EmitWriteHeaders("        ").NewLine()}}
     }
 }
 """);
+
+        if (!context.IsNet7OrGreater)
+        {
+            // add formatter(can not use MemoryPackableFormatter)
+
+            var code = $$"""
+
+partial {{classOrStructOrRecord}} {{TypeName}}
+{
+    sealed class {{Symbol.Name}}Formatter : IOpenXmlFormatter<{{TypeName}}>
+    {
+        [global::FastExcelSlim.Internal.Preserve]
+        void IOpenXmlFormatter<{{TypeName}}>.WriteCell<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex,
+            {{scopedRef}} {{TypeName}} value)
+        {
+            WriteCell(ref writer, styles, rowIndex, ref value);
+        }
+    
+        [global::FastExcelSlim.Internal.Preserve]
+        void IOpenXmlFormatter<{{TypeName}}>.WriteColumns<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer)
+        {
+            WriteColumns(ref writer);
+        }
+    
+        [global::FastExcelSlim.Internal.Preserve]
+        void IOpenXmlFormatter<{{TypeName}}>.WriteHeaders<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles)
+        {
+            WriteHeaders(ref writer, styles);
+        }
+    
+        [global::FastExcelSlim.Internal.Preserve]
+        int IOpenXmlFormatter<{{TypeName}}>.ColumnCount => ColumnCount;
+    
+        [global::FastExcelSlim.Internal.Preserve]
+        string? IOpenXmlFormatter<{{TypeName}}>.SheetName => SheetName;
+    }
+}
+""";
+            writer.AppendLine(code);
+        }
     }
 
     private string GetSheetName()

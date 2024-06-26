@@ -8,14 +8,17 @@ internal class WellKnownTypes
     private readonly ReferenceSymbols _parent;
     private readonly HashSet<ITypeSymbol> _knownTypes;
 
-    public WellKnownTypes(ReferenceSymbols parent)
+    public WellKnownTypes(ReferenceSymbols parent, IGeneratorContext context)
     {
         _parent = parent;
         System_Nullable = GetTypeByMetadataName("System.Nullable`1");
         System_Boolean = GetTypeByMetadataName("System.Boolean");
         System_Guid = GetTypeByMetadataName("System.Guid");
-        System_TimeOnly = GetTypeByMetadataName("System.TimeOnly");
-        System_DateOnly = GetTypeByMetadataName("System.DateOnly");
+        if (context.IsNet7OrGreater)
+        {
+            System_TimeOnly = GetTypeByMetadataName("System.TimeOnly");
+            System_DateOnly = GetTypeByMetadataName("System.DateOnly");
+        }
         System_DateTime = GetTypeByMetadataName("System.DateTime");
         System_Byte = GetTypeByMetadataName("System.Byte");
         System_Decimal = GetTypeByMetadataName("System.Decimal");
@@ -34,8 +37,6 @@ internal class WellKnownTypes
         {
             System_Boolean,
             System_Guid,
-            System_TimeOnly,
-            System_DateOnly,
             System_DateTime,
             System_Byte,
             System_Decimal,
@@ -50,14 +51,19 @@ internal class WellKnownTypes
             System_UInt64,
             System_String
         }, SymbolEqualityComparer.Default);
+        if (context.IsNet7OrGreater)
+        {
+            _knownTypes.Add(System_TimeOnly!);
+            _knownTypes.Add(System_DateOnly!);
+        }
     }
 
     //System.Nullable
     public INamedTypeSymbol System_Nullable { get; }
     public INamedTypeSymbol System_Boolean { get; }
     public INamedTypeSymbol System_Guid { get; }
-    public INamedTypeSymbol System_TimeOnly { get; }
-    public INamedTypeSymbol System_DateOnly { get; }
+    public INamedTypeSymbol? System_TimeOnly { get; }
+    public INamedTypeSymbol? System_DateOnly { get; }
     public INamedTypeSymbol System_DateTime { get; }
     public INamedTypeSymbol System_Byte { get; }
     public INamedTypeSymbol System_Decimal { get; }

@@ -1,7 +1,9 @@
 ﻿using System.Buffers;
 using System.Diagnostics;
 using System.IO.Pipelines;
+#if NETCOREAPP
 using System.Runtime.CompilerServices;
+#endif
 
 namespace FastExcelSlim.BufferWriter
 {
@@ -258,7 +260,11 @@ namespace FastExcelSlim.BufferWriter
             CancellationTokenRegistration reg = default;
             if (cancellationToken.CanBeCanceled)
             {
+#if NET7_0_OR_GREATER
                 reg = cancellationToken.UnsafeRegister(state => ((StreamPipeWriter)state!).Cancel(), this);
+#else
+                reg = cancellationToken.Register(Cancel);
+#endif
             }
 
             if (_tailBytesBuffered > 0)

@@ -1,5 +1,7 @@
-﻿using System.Collections.Immutable;
-using Utf8StringInterpolation;
+﻿using Utf8StringInterpolation;
+#if NET7_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 
 namespace FastExcelSlim.OpenXml;
 
@@ -7,7 +9,11 @@ internal class OpenXmlWorkbook
 {
     private readonly List<OpenXmlSheet> _sheets = new(1);
 
+#if NET7_0_OR_GREATER
     public ImmutableArray<OpenXmlSheet> Sheets => _sheets.ToImmutableArray();
+#else
+    public IReadOnlyCollection<OpenXmlSheet> Sheets => _sheets.ToList();
+#endif
 
     public void CreateSheet<T>(IEnumerable<T> values, OpenXmlStyles styles)
     {

@@ -75,6 +75,7 @@ static partial class Utf8StringWriterExtensions
         return oaDate;
     }
 
+#if NET7_0_OR_GREATER
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
@@ -110,6 +111,7 @@ static partial class Utf8StringWriterExtensions
         writer.WriteAttribute("s", styleIndex);
         writer.AppendFormat($"><v>{value:HH:mm:ss}</v></c>");
     }
+#endif
 
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,

@@ -16,6 +16,7 @@ public interface IOpenXmlFormatter<T>
     string? SheetName { get; }
 }
 
+#if NET7_0_OR_GREATER
 public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXmlWritable<T>
 {
     public void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex, scoped ref T value) where TBufferWriter : IBufferWriter<byte>
@@ -37,3 +38,4 @@ public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXm
 
     public string? SheetName => T.SheetName;
 }
+#endif

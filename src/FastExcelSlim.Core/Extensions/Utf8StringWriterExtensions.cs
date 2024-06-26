@@ -1,8 +1,11 @@
 ﻿using System.Buffers;
-using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using Utf8StringInterpolation;
+
+#if NET7_0_OR_GREATER
+using System.Collections.Immutable;
+using System.Runtime.InteropServices;
+#endif
 
 namespace FastExcelSlim.Extensions;
 
@@ -111,7 +114,11 @@ public static partial class Utf8StringWriterExtensions
         { '<', "&lt;" },
         { '>', "&gt;" },
         { '\"', "&quot;" },
+#if NET7_0_OR_GREATER
     }.ToImmutableDictionary();
+#else
+    };
+#endif
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int CountXDigits(uint x)
@@ -132,6 +139,7 @@ public static partial class Utf8StringWriterExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static int CountDigits(uint value)
     {
+#if NET7_0_OR_GREATER
         // Algorithm based on https://lemire.me/blog/2021/06/03/computing-the-number-of-digits-of-an-integer-even-faster.
         ReadOnlySpan<long> table =
         [
@@ -170,5 +178,9 @@ public static partial class Utf8StringWriterExtensions
         ];
         var tableValue = Unsafe.Add(ref MemoryMarshal.GetReference(table), uint.Log2(value));
         return (int)((value + tableValue) >> 32);
+#else
+        var count = Math.Floor(Math.Log10(value) + 1);
+        return (int)count;
+#endif
     }
 }

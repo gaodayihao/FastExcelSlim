@@ -4,7 +4,7 @@ namespace FastExcelSlim.Generator;
 
 internal class ReferenceSymbols
 {
-    public ReferenceSymbols(Compilation compilation)
+    public ReferenceSymbols(Compilation compilation, IGeneratorContext context)
     {
         Compilation = compilation;
 
@@ -14,7 +14,7 @@ internal class ReferenceSymbols
         OpenXmlOrderAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlOrderAttribute");
         OpenXmlEnumFormatAttribute = GetTypeByMetadataName("FastExcelSlim.OpenXmlEnumFormatAttribute");
 
-        KnownTypes = new WellKnownTypes(this);
+        KnownTypes = new WellKnownTypes(this, context);
     }
 
     public Compilation Compilation { get; }

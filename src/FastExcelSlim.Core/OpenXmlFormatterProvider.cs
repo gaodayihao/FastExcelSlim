@@ -9,10 +9,12 @@ public static class OpenXmlFormatterProvider
 {
     public static bool IsRegistered<T>() => Check<T>.Registered;
 
+#if NET7_0_OR_GREATER
     public static void Register<T>() where T : IOpenXmlWritable<T>
     {
         T.RegisterFormatter();
     }
+#endif
 
     public static void Register<T>(IOpenXmlFormatter<T> formatter)
     {

@@ -1,10 +1,13 @@
-﻿using System.Buffers;
+﻿#if NET7_0_OR_GREATER
+using System.Buffers;
 using Utf8StringInterpolation;
+#endif
 
 namespace FastExcelSlim;
 
 public interface IOpenXmlWritable<T> where T : IOpenXmlWritable<T>
 {
+#if NET7_0_OR_GREATER
     static abstract int ColumnCount { get; }
 
     static abstract string? SheetName { get; }
@@ -16,4 +19,5 @@ public interface IOpenXmlWritable<T> where T : IOpenXmlWritable<T>
     static abstract void WriteColumns<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer) where TBufferWriter : IBufferWriter<byte>;
 
     static abstract void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles) where TBufferWriter : IBufferWriter<byte>;
+#endif
 }
