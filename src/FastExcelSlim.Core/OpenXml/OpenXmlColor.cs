@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Buffers;
+using System.Drawing;
 using FastExcelSlim.Extensions;
 using Utf8StringInterpolation;
 
@@ -19,6 +20,21 @@ public class OpenXmlColor : XmlElement
     public int? ColorIndex { get; }
 
     public Color? Color { get; }
+
+    internal void Write<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, string nodeName)
+        where TBufferWriter : IBufferWriter<byte>
+    {
+        writer.AppendFormat($"<{nodeName}");
+        if (ColorIndex.HasValue)
+        {
+            writer.WriteAttribute("indexed", ColorIndex.Value);
+        }
+        if (Color.HasValue)
+        {
+            writer.WriteAttribute("rgb", Color.Value);
+        }
+        writer.AppendLiteral("/>");
+    }
 
     internal override void Write<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer)
     {

@@ -82,8 +82,8 @@ public class PatternFill : XmlElement
         else
         {
             writer.AppendLiteral(">");
-            ForegroundColor?.Write(ref writer);
-            BackgroundColor?.Write(ref writer);
+            ForegroundColor?.Write(ref writer, "fgColor");
+            BackgroundColor?.Write(ref writer, "bgColor");
             writer.AppendLiteral("</patternFill>");
         }
     }

@@ -49,7 +49,7 @@ partial class Utf8StringWriterExtensions
     public static void WriteAttribute<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, string attributeName, Color color)
         where TBufferWriter : IBufferWriter<byte>
     {
-        writer.AppendFormat($" {attributeName}=\"{color.R:X2}{color.G:X2}{color.B:X2}\"");
+        writer.AppendFormat($" {attributeName}=\"{color.A:X2}{color.R:X2}{color.G:X2}{color.B:X2}\"");
     }
 
     public static void WriteAttribute<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, string attributeName, bool value)
