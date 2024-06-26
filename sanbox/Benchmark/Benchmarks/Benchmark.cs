@@ -32,7 +32,7 @@ public class Benchmark
     public void FastExcelSlim()
     {
         using var stream = Manager.GetStream();
-        _entities!.SaveAs(stream);
+        _entities!.SaveToExcel(stream);
     }
 
     [Benchmark(Baseline = true)]

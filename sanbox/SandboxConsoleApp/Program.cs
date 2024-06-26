@@ -1,20 +1,16 @@
 ﻿using AutoFixture;
 using FastExcelSlim;
-using FastExcelSlim.OpenXml;
 
 var fixture = new Fixture();
 var demos = fixture.Build<DemoEntity>().CreateMany(1000);
 var students = fixture.Build<Student>().CreateMany(5000);
 
 var stream = File.Open("sandbox.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-var writer = new OpenXmlWorkbookWriter(stream);
-writer.CreateSheet(demos);
-writer.CreateSheet(students);
-writer.Save();
+stream.SaveToExcel(demos, students);
 stream.Dispose();
 
 demos = fixture.Build<DemoEntity>().CreateMany(1000);
-demos.SaveAs("singleSheet.xlsx");
+demos.SaveToExcel("singleSheet.xlsx");
 
 //Console.WriteLine("press enter to start");
 //Console.ReadLine();
@@ -28,7 +24,7 @@ demos.SaveAs("singleSheet.xlsx");
 
 //var sw = new Stopwatch();
 //sw.Start();
-//students.SaveAs("students.xlsx");
+//students.SaveToExcel("students.xlsx");
 //GC.Collect();
 //sw.Stop();
 //Console.WriteLine($"done cost: {sw.Elapsed.TotalSeconds}s");
