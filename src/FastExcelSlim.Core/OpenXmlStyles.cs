@@ -11,11 +11,11 @@ public abstract class OpenXmlStyles
 
     protected const int NoneStyleIndex = 0;
 
-    public abstract int GetCellStyleIndex<T>(string propertyName, scoped ref T entity);
+    public abstract int GetCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity);
 
     public abstract int GetHeaderStyleIndex(string propertyName);
 
-    public abstract int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity);
+    public abstract int GetDateTimeCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity);
 
     internal void Write<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer)
         where TBufferWriter : IBufferWriter<byte>
@@ -24,7 +24,7 @@ public abstract class OpenXmlStyles
     }
 }
 
-public class NoneStyles : OpenXmlStyles
+internal sealed class NoneStyles : OpenXmlStyles
 {
     private readonly int _defaultDateTimeCellStyleIndex;
 
@@ -38,7 +38,7 @@ public class NoneStyles : OpenXmlStyles
         _defaultDateTimeCellStyleIndex = defaultDateTimeCellStyle.Id;
     }
 
-    public override int GetCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    public override int GetCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity)
     {
         return NoneStyleIndex;
     }
@@ -48,7 +48,7 @@ public class NoneStyles : OpenXmlStyles
         return NoneStyleIndex;
     }
 
-    public override int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    public override int GetDateTimeCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity)
     {
         return _defaultDateTimeCellStyleIndex;
     }
@@ -56,7 +56,7 @@ public class NoneStyles : OpenXmlStyles
 
 public class DefaultStyles : OpenXmlStyles
 {
-    public static readonly DefaultStyles Default = new();
+    public static readonly OpenXmlStyles Default = new DefaultStyles();
     public static readonly OpenXmlStyles None = new NoneStyles();
 
     protected Border DefaultBorder { get; }
@@ -83,7 +83,7 @@ public class DefaultStyles : OpenXmlStyles
         DefaultDateTimeCellStyle = CreateDefaultDateTimeStyle();
     }
 
-    public override int GetCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    public override int GetCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity)
     {
         return DefaultCellStyle.Id;
     }
@@ -93,7 +93,7 @@ public class DefaultStyles : OpenXmlStyles
         return DefaultHeaderStyle.Id;
     }
 
-    public override int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    public override int GetDateTimeCellStyleIndex<T>(string propertyName, int rowIndex, scoped ref T entity)
     {
         return DefaultDateTimeCellStyle.Id;
     }

@@ -13,7 +13,7 @@ static partial class Utf8StringWriterExtensions
         where TBufferWriter : IBufferWriter<byte>
     {
         var preserveSpace = !string.IsNullOrEmpty(value) && (value.StartsWith(' ') || value.EndsWith(' '));
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendFormat($"\" t=\"str\"{(preserveSpace ? " xml:space=\"preserve\"" : string.Empty)}");
@@ -30,10 +30,10 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
-        writer.AppendFormat($"\" t=\"str\"{(value == ' ' ? " xml:space=\"preserve\"" : string.Empty)}");
+        writer.AppendLiteral("\" t=\"str\"");
         writer.WriteAttribute("s", styleIndex);
         writer.AppendLiteral("><v>");
         writer.EncodeXml(value);
@@ -53,7 +53,7 @@ static partial class Utf8StringWriterExtensions
             false => "0",
             _ => string.Empty
         };
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\" t=\"b\"");
@@ -68,7 +68,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\" t=\"str\"");
@@ -100,7 +100,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -121,7 +121,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\" t=\"str\"");
@@ -137,7 +137,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -159,7 +159,7 @@ static partial class Utf8StringWriterExtensions
         where TBufferWriter : IBufferWriter<byte>
         where TValue : Enum
     {
-        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\" t=\"str\"");
@@ -174,7 +174,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -189,7 +189,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -204,7 +204,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -219,7 +219,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -234,7 +234,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -249,7 +249,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -264,7 +264,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -279,7 +279,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -294,7 +294,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -309,7 +309,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");
@@ -324,7 +324,7 @@ static partial class Utf8StringWriterExtensions
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
-        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);
         writer.AppendLiteral("\"");

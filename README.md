@@ -49,11 +49,13 @@ var cars = new List<Car>
 
 cars.SaveToExcel("cars.xlsx");
 ```
-<img width="345" alt="screenshot1" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
+<img width="345" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
 
 
 Supported field/property types
 ---
+
+The following types all support Nullable
 
 * `Enum`
 * `bool`
@@ -197,6 +199,7 @@ public partial class Sample
 
     public Gender Gender {get;set;}
 
+    [OpenXmlProperty(ColumnName = "Gender Value", Width = 20)]
     [OpenXmlEnumFormat("D")] 
     public Gender GenderValue => Gender;
 }
@@ -208,10 +211,143 @@ public enum Gender
     Others
 }
 ```
-<img width="502" alt="PixPin_2024-06-27_16-41-59" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
+<img width="502" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
 
-<img width="622" alt="PixPin_2024-06-27_15-59-38" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/6d81c5eb-cb73-4081-9a8a-c5a5080ce441">
-<img width="617" alt="PixPin_2024-06-27_15-58-59" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/b8ea0124-35f6-4875-9170-ce99393a8815">
+### Custom Styles
+There are two default styles: `Default` and `None` You can specify the style during export
+```csharp
+students.SaveToExcel("students.xlsx", DefaultStyles.Default);
+students.SaveToExcel("students.xlsx", DefaultStyles.None);
+```
+
+* Default
+
+    <img width="622" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/6d81c5eb-cb73-4081-9a8a-c5a5080ce441">
+
+* None
+
+    <img width="617" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/b8ea0124-35f6-4875-9170-ce99393a8815">
+
+You can also customize styles by inheriting from the `OpenXmlStyles` class
+
+```csharp
+using System.Drawing;
+using FastExcelSlim;
+using FastExcelSlim.OpenXml;
+
+[OpenXmlWritable(SheetName = "Simple")]
+internal partial class Simple
+{
+    public string Name { get; set; }
+
+    public DateTime Birthday { get; set; }
+
+    public Gender Gender { get; set; }
+}
+
+
+internal class SampleStyles : OpenXmlStyles
+{
+    private readonly CellStyle _headerStyle;
+    private readonly CellStyle _singularLineStyle;
+    private readonly CellStyle _pluralLineStyle;
+    private readonly CellStyle _singularLineDateTimeStyle;
+    private readonly CellStyle _pluralLineDateTimeStyle;
+
+    public SampleStyles()
+    {
+        _headerStyle = StyleTable.CreateCellStyle();
+        var headerFont = StyleTable.CreateFont();
+        headerFont.IsBold = true;
+        _headerStyle.Font = headerFont;
+
+        var singularLineCellFill = StyleTable.CreateFill();
+        var fill = singularLineCellFill.AddPatternFill();
+        fill.PatternType = PatternType.Solid;
+        fill.SetForegroundColor(Color.Gainsboro);
+
+        var pluralLineFill = StyleTable.CreateFill();
+        fill = pluralLineFill.AddPatternFill();
+        fill.PatternType = PatternType.Solid;
+        fill.SetForegroundColor(Color.CornflowerBlue);
+
+        var dateTimeFormat = StyleTable.GetDataFormat("yyyy-mm-dd");
+
+        _singularLineDateTimeStyle = StyleTable.CreateCellStyle();
+        _singularLineDateTimeStyle.DataFormat = dateTimeFormat;
+        _singularLineDateTimeStyle.AddAlignment().Vertical = CellVerticalAlignment.Center;
+        _singularLineDateTimeStyle.Fill = singularLineCellFill;
+
+        _pluralLineDateTimeStyle = StyleTable.CreateCellStyle();
+        _pluralLineDateTimeStyle.DataFormat = dateTimeFormat;
+        _pluralLineDateTimeStyle.AddAlignment().Vertical = CellVerticalAlignment.Center;
+        _pluralLineDateTimeStyle.Fill = pluralLineFill;
+
+        _singularLineStyle = StyleTable.CreateCellStyle();
+        _singularLineStyle.Fill = singularLineCellFill;
+
+        _pluralLineStyle = StyleTable.CreateCellStyle();
+        _pluralLineStyle.Fill = pluralLineFill;
+    }
+
+    public override int GetCellStyleIndex<T>(string propertyName, int rowIndex, ref T entity)
+    {
+        if (rowIndex % 2 == 0)
+        {
+            return _pluralLineStyle.Id;
+        }
+
+        return _singularLineStyle.Id;
+    }
+
+    public override int GetHeaderStyleIndex(string propertyName)
+    {
+        return _headerStyle.Id;
+    }
+
+    public override int GetDateTimeCellStyleIndex<T>(string propertyName, int rowIndex, ref T entity)
+    {
+        if (rowIndex % 2 == 0)
+        {
+            return _pluralLineDateTimeStyle.Id;
+        }
+
+        return _singularLineDateTimeStyle.Id;
+    }
+}
+
+var simples = new List<Simple>
+{
+    new()
+    {
+        Birthday = new DateTime(2000, 2, 5),
+        Name = "Jack",
+        Gender = Gender.Male
+    },
+    new()
+    {
+        Birthday = new DateTime(2001, 12, 3),
+        Name = "Anna",
+        Gender = Gender.Female
+    },
+    new()
+    {
+        Birthday = new DateTime(1995, 3, 8),
+        Name = "Jessie",
+        Gender = Gender.Female
+    },
+    new()
+    {
+        Birthday = new DateTime(1986, 6, 5),
+        Name = "Andy",
+        Gender = Gender.Male
+    },
+};
+
+simples.SaveToExcel("simple.xlsx", new SampleStyles());
+
+```
+
 
 
 Benchmark
