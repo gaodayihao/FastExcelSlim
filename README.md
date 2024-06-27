@@ -208,6 +208,11 @@ public enum Gender
     Others
 }
 ```
+<img width="502" alt="PixPin_2024-06-27_16-41-59" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
+
+<img width="622" alt="PixPin_2024-06-27_15-59-38" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/6d81c5eb-cb73-4081-9a8a-c5a5080ce441">
+<img width="617" alt="PixPin_2024-06-27_15-58-59" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/b8ea0124-35f6-4875-9170-ce99393a8815">
+
 
 Benchmark
 ---
