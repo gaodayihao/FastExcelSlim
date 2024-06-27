@@ -16,7 +16,9 @@ public interface IOpenXmlFormatter<T>
 
     string? SheetName { get; }
 
-    OpenXmlExcelOptions GetOptions();
+    bool FreezeHeader { get; }
+
+    bool AutoFilter { get; }
 }
 
 #if NET7_0_OR_GREATER
@@ -38,12 +40,8 @@ public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXm
     }
 
     public int ColumnCount => T.ColumnCount;
-
     public string? SheetName => T.SheetName;
-
-    public OpenXmlExcelOptions GetOptions()
-    {
-        return T.GetOptions();
-    }
+    public bool FreezeHeader => T.FreezeHeader;
+    public bool AutoFilter => T.AutoFilter;
 }
 #endif

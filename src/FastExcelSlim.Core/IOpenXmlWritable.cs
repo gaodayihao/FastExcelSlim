@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using System.Buffers;
-using FastExcelSlim.OpenXml;
 using Utf8StringInterpolation;
 #endif
 
@@ -21,6 +20,8 @@ public interface IOpenXmlWritable<T> where T : IOpenXmlWritable<T>
 
     static abstract void WriteHeaders<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles) where TBufferWriter : IBufferWriter<byte>;
 
-    static abstract OpenXmlExcelOptions GetOptions();
+    static abstract bool FreezeHeader { get; }
+
+    static abstract bool AutoFilter { get; }
 #endif
 }

@@ -112,13 +112,9 @@ internal sealed class ErrorOpenXmlFormatter<T> : IOpenXmlFormatter<T>
     }
 
     public int ColumnCount => 1;
-
     public string? SheetName => default;
-
-    public OpenXmlExcelOptions GetOptions()
-    {
-        return new OpenXmlExcelOptions();
-    }
+    public bool FreezeHeader => false;
+    public bool AutoFilter => false;
 
     [DoesNotReturn]
     private void Throw()

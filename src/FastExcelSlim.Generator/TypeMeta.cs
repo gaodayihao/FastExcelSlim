@@ -140,7 +140,7 @@ internal class TypeMeta
             (false, false) => "class",
         };
 
-        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, staticReturnOptionMethod, registerBody, registerT, constraint;
+        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, staticReturnBooleanMethod, registerBody, registerT, constraint;
         var scopedRef = (context.IsCSharp11OrGreater())
             ? "scoped ref"
             : "ref";
@@ -150,7 +150,7 @@ internal class TypeMeta
             staticReturnVoidMethod = "internal static void ";
             staticReturnIntMethod = "internal static int ";
             staticReturnStringMethod = "internal static string? ";
-            staticReturnOptionMethod = "internal static global::FastExcelSlim.OpenXml.OpenXmlExcelOptions ";
+            staticReturnBooleanMethod = "internal static bool ";
             registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new {Symbol.Name}Formatter());";
             registerT = "RegisterFormatter();";
             constraint = " where TBufferWriter : System.Buffers.IBufferWriter<byte>";
@@ -160,7 +160,7 @@ internal class TypeMeta
             staticReturnVoidMethod = $"static void IOpenXmlWritable<{TypeName}>.";
             staticReturnIntMethod = $"static int IOpenXmlWritable<{TypeName}>.";
             staticReturnStringMethod = $"static string? IOpenXmlWritable<{TypeName}>.";
-            staticReturnOptionMethod = $"static global::FastExcelSlim.OpenXml.OpenXmlExcelOptions IOpenXmlWritable<{TypeName}>.";
+            staticReturnBooleanMethod = $"static bool IOpenXmlWritable<{TypeName}>.";
             registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new global::FastExcelSlim.OpenXmlFormatter<{TypeName}>());";
             registerT = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register<{TypeName}>();";
             constraint = string.Empty;
@@ -174,6 +174,12 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
 
     [global::FastExcelSlim.Internal.Preserve]
     {{staticReturnStringMethod}}SheetName => {{GetSheetName()}};
+
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnBooleanMethod}}FreezeHeader => {{GetFreezeHeader()}};
+    
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnBooleanMethod}}AutoFilter => {{GetAutoFilter()}};
 
     static partial void StaticConstructor();
 
@@ -216,12 +222,6 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     {
 {{EmitWriteHeaders("        ").NewLine()}}
     }
-    
-    [global::FastExcelSlim.Internal.Preserve]
-    {{staticReturnOptionMethod}}GetOptions()
-    {
-        {{EmitWriteOptions()}}
-    }
 }
 """);
 
@@ -261,7 +261,10 @@ partial {{classOrStructOrRecord}} {{TypeName}}
         string? IOpenXmlFormatter<{{TypeName}}>.SheetName => SheetName;
         
         [global::FastExcelSlim.Internal.Preserve]
-        global::FastExcelSlim.OpenXml.OpenXmlExcelOptions IOpenXmlFormatter<{{TypeName}}>.GetOptions() => GetOptions();
+        bool IOpenXmlFormatter<{{TypeName}}>.FreezeHeader => FreezeHeader;
+        
+        [global::FastExcelSlim.Internal.Preserve]
+        bool IOpenXmlFormatter<{{TypeName}}>.AutoFilter => AutoFilter;
     }
 }
 """;
@@ -300,12 +303,16 @@ partial {{classOrStructOrRecord}} {{TypeName}}
         }
     }
 
-    private string EmitWriteOptions()
+    private string GetAutoFilter()
     {
         var autoFilter = GetAttributeNamedArgumentValue(_reference.OpenXmlWritableAttribute, "AutoFilter", false);
-        var freezeHeader = GetAttributeNamedArgumentValue(_reference.OpenXmlWritableAttribute, "FreezeHeader", false);
+        return autoFilter.ToString().ToLower();
+    }
 
-        return $"return new global::FastExcelSlim.OpenXml.OpenXmlExcelOptions({freezeHeader.ToString().ToLower()}, {autoFilter.ToString().ToLower()});";
+    private string GetFreezeHeader()
+    {
+        var freezeHeader = GetAttributeNamedArgumentValue(_reference.OpenXmlWritableAttribute, "FreezeHeader", false);
+        return freezeHeader.ToString().ToLower();
     }
 
     private IEnumerable<string> EmitWriteColumns(string indent)

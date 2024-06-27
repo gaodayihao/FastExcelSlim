@@ -42,15 +42,14 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
 
     public override void Write(scoped ref ZipEntryWriterWrapper wrapper)
     {
-        var options = _formatter.GetOptions();
         wrapper.Writer.AppendLiteral(ExcelXml.SheetStart);
         _sheetDimension.Write(ref wrapper.Writer);
-        wrapper.Writer.AppendLiteral(options.FreezeHeader ? ExcelXml.SheetViewsWithHeaderFrozen : ExcelXml.SheetViews);
+        wrapper.Writer.AppendLiteral(_formatter.FreezeHeader ? ExcelXml.SheetViewsWithHeaderFrozen : ExcelXml.SheetViews);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetFormatPr);
         wrapper.CheckAndFlush();
         WriteColumns(ref wrapper);
         var rows = WriteSheetData(ref wrapper);
-        WriteAutoFilter(ref wrapper, ref options, _sheetDimension.MaxColumn, rows);
+        WriteAutoFilter(ref wrapper, _formatter.AutoFilter, _sheetDimension.MaxColumn, rows);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetPageMargins);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetEnd);
     }
@@ -63,9 +62,9 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
         wrapper.CheckAndFlush();
     }
 
-    private static void WriteAutoFilter(scoped ref ZipEntryWriterWrapper wrapper, scoped ref OpenXmlExcelOptions options, int columns, int rows)
+    private static void WriteAutoFilter(scoped ref ZipEntryWriterWrapper wrapper, bool autoFilter, int columns, int rows)
     {
-        if (options.AutoFilter && rows > 1 && columns > 0)
+        if (autoFilter && rows > 1 && columns > 0)
         {
             wrapper.Writer.AppendLiteral("<autoFilter ref=\"A1");
             wrapper.Writer.AppendLiteral(":");
