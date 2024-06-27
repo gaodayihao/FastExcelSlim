@@ -11,6 +11,20 @@ namespace FastExcelSlim.Extensions;
 
 public static partial class Utf8StringWriterExtensions
 {
+    public static void EncodeXml<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, char? value)
+        where TBufferWriter : IBufferWriter<byte>
+    {
+        if (!value.HasValue) return;
+        if (EncodeMap.TryGetValue(value.Value, out var encode))
+        {
+            writer.AppendLiteral(encode);
+        }
+        else
+        {
+            writer.Append(value.Value);
+        }
+    }
+
     public static void EncodeXml<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, string? xml) where TBufferWriter : IBufferWriter<byte>
     {
         if (xml == null) return;

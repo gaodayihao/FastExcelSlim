@@ -32,6 +32,7 @@ internal class WellKnownTypes
         System_UInt32 = GetTypeByMetadataName("System.UInt32");
         System_UInt64 = GetTypeByMetadataName("System.UInt64");
         System_String = GetTypeByMetadataName("System.String");
+        System_Char = GetTypeByMetadataName("System.Char");
 
         _knownTypes = new HashSet<ITypeSymbol>(new[]
         {
@@ -49,7 +50,8 @@ internal class WellKnownTypes
             System_UInt16,
             System_UInt32,
             System_UInt64,
-            System_String
+            System_String,
+            System_Char
         }, SymbolEqualityComparer.Default);
         if (context.IsNet7OrGreater)
         {
@@ -77,6 +79,7 @@ internal class WellKnownTypes
     public INamedTypeSymbol System_UInt32 { get; }
     public INamedTypeSymbol System_UInt64 { get; }
     public INamedTypeSymbol System_String { get; }
+    public INamedTypeSymbol System_Char { get; }
 
     public bool Contains(ITypeSymbol symbol)
     {

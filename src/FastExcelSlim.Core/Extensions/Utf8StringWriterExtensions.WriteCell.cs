@@ -26,6 +26,23 @@ static partial class Utf8StringWriterExtensions
     public static void WriteCell<TBufferWriter, T>(
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
+        char? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
+        where T : IOpenXmlWritable<T>
+        where TBufferWriter : IBufferWriter<byte>
+    {
+        var styleIndex = styles.GetCellStyleIndex(propertyName, ref entity);
+        writer.AppendLiteral("<c r=\"");
+        writer.ConvertXYToCellReference(columnIndex, rowIndex);
+        writer.AppendFormat($"\" t=\"str\"{(value == ' ' ? " xml:space=\"preserve\"" : string.Empty)}");
+        writer.WriteAttribute("s", styleIndex);
+        writer.AppendLiteral("><v>");
+        writer.EncodeXml(value);
+        writer.AppendLiteral("</v></c>");
+    }
+
+    public static void WriteCell<TBufferWriter, T>(
+        this scoped ref Utf8StringWriter<TBufferWriter> writer,
+        OpenXmlStyles styles,
         bool? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
