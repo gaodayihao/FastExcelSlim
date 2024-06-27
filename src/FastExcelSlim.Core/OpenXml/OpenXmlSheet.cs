@@ -1,4 +1,5 @@
-﻿using Utf8StringInterpolation;
+﻿using FastExcelSlim.Extensions;
+using Utf8StringInterpolation;
 
 namespace FastExcelSlim.OpenXml;
 
@@ -41,13 +42,15 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
 
     public override void Write(scoped ref ZipEntryWriterWrapper wrapper)
     {
+        var options = _formatter.GetOptions();
         wrapper.Writer.AppendLiteral(ExcelXml.SheetStart);
         _sheetDimension.Write(ref wrapper.Writer);
-        wrapper.Writer.AppendLiteral(ExcelXml.SheetViews);
+        wrapper.Writer.AppendLiteral(options.FreezeHeader ? ExcelXml.SheetViewsWithHeaderFrozen : ExcelXml.SheetViews);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetFormatPr);
         wrapper.CheckAndFlush();
         WriteColumns(ref wrapper);
-        WriteSheetData(ref wrapper);
+        var rows = WriteSheetData(ref wrapper);
+        WriteAutoFilter(ref wrapper, ref options, _sheetDimension.MaxColumn, rows);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetPageMargins);
         wrapper.Writer.AppendLiteral(ExcelXml.SheetEnd);
     }
@@ -60,7 +63,18 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
         wrapper.CheckAndFlush();
     }
 
-    private void WriteSheetData(scoped ref ZipEntryWriterWrapper wrapper)
+    private static void WriteAutoFilter(scoped ref ZipEntryWriterWrapper wrapper, scoped ref OpenXmlExcelOptions options, int columns, int rows)
+    {
+        if (options.AutoFilter && rows > 1 && columns > 0)
+        {
+            wrapper.Writer.AppendLiteral("<autoFilter ref=\"A1");
+            wrapper.Writer.AppendLiteral(":");
+            wrapper.Writer.ConvertXYToCellReference(columns, rows);
+            wrapper.Writer.AppendLiteral("\"/>");
+        }
+    }
+
+    private int WriteSheetData(scoped ref ZipEntryWriterWrapper wrapper)
     {
         wrapper.Writer.AppendLiteral("<sheetData>");
         WriteHeaderRow(ref wrapper);
@@ -75,6 +89,7 @@ internal class OpenXmlSheet<T> : OpenXmlSheet
             wrapper.CheckAndFlush();
         }
         wrapper.Writer.AppendLiteral("</sheetData>");
+        return rowIndex - 1;
     }
 
     private void WriteHeaderRow(scoped ref ZipEntryWriterWrapper wrapper)

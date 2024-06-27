@@ -4,6 +4,10 @@
 public sealed class OpenXmlWritableAttribute : Attribute
 {
     public string? SheetName { get; set; }
+
+    public bool AutoFilter { get; set; }
+
+    public bool FreezeHeader { get; set; }
 }
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]

@@ -140,7 +140,7 @@ internal class TypeMeta
             (false, false) => "class",
         };
 
-        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, registerBody, registerT, constraint;
+        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, staticReturnOptionMethod, registerBody, registerT, constraint;
         var scopedRef = (context.IsCSharp11OrGreater())
             ? "scoped ref"
             : "ref";
@@ -150,6 +150,7 @@ internal class TypeMeta
             staticReturnVoidMethod = "internal static void ";
             staticReturnIntMethod = "internal static int ";
             staticReturnStringMethod = "internal static string? ";
+            staticReturnOptionMethod = "internal static global::FastExcelSlim.OpenXml.OpenXmlExcelOptions ";
             registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new {Symbol.Name}Formatter());";
             registerT = "RegisterFormatter();";
             constraint = " where TBufferWriter : System.Buffers.IBufferWriter<byte>";
@@ -159,6 +160,7 @@ internal class TypeMeta
             staticReturnVoidMethod = $"static void IOpenXmlWritable<{TypeName}>.";
             staticReturnIntMethod = $"static int IOpenXmlWritable<{TypeName}>.";
             staticReturnStringMethod = $"static string? IOpenXmlWritable<{TypeName}>.";
+            staticReturnOptionMethod = $"static global::FastExcelSlim.OpenXml.OpenXmlExcelOptions IOpenXmlWritable<{TypeName}>.";
             registerBody = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register(new global::FastExcelSlim.OpenXmlFormatter<{TypeName}>());";
             registerT = $"global::FastExcelSlim.OpenXmlFormatterProvider.Register<{TypeName}>();";
             constraint = string.Empty;
@@ -214,6 +216,12 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     {
 {{EmitWriteHeaders("        ").NewLine()}}
     }
+    
+    [global::FastExcelSlim.Internal.Preserve]
+    {{staticReturnOptionMethod}}GetOptions()
+    {
+        {{EmitWriteOptions()}}
+    }
 }
 """);
 
@@ -228,20 +236,20 @@ partial {{classOrStructOrRecord}} {{TypeName}}
     sealed class {{Symbol.Name}}Formatter : IOpenXmlFormatter<{{TypeName}}>
     {
         [global::FastExcelSlim.Internal.Preserve]
-        void IOpenXmlFormatter<{{TypeName}}>.WriteCell<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex,
+        void IOpenXmlFormatter<{{TypeName}}>.WriteCell<TBufferWriter>({{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex,
             {{scopedRef}} {{TypeName}} value)
         {
             WriteCell(ref writer, styles, rowIndex, ref value);
         }
     
         [global::FastExcelSlim.Internal.Preserve]
-        void IOpenXmlFormatter<{{TypeName}}>.WriteColumns<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer)
+        void IOpenXmlFormatter<{{TypeName}}>.WriteColumns<TBufferWriter>({{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer)
         {
             WriteColumns(ref writer);
         }
     
         [global::FastExcelSlim.Internal.Preserve]
-        void IOpenXmlFormatter<{{TypeName}}>.WriteHeaders<TBufferWriter>({{scopedRef}} Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles)
+        void IOpenXmlFormatter<{{TypeName}}>.WriteHeaders<TBufferWriter>({{scopedRef}} global::Utf8StringInterpolation.Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles)
         {
             WriteHeaders(ref writer, styles);
         }
@@ -251,6 +259,9 @@ partial {{classOrStructOrRecord}} {{TypeName}}
     
         [global::FastExcelSlim.Internal.Preserve]
         string? IOpenXmlFormatter<{{TypeName}}>.SheetName => SheetName;
+        
+        [global::FastExcelSlim.Internal.Preserve]
+        global::FastExcelSlim.OpenXml.OpenXmlExcelOptions IOpenXmlFormatter<{{TypeName}}>.GetOptions() => GetOptions();
     }
 }
 """;
@@ -287,6 +298,14 @@ partial {{classOrStructOrRecord}} {{TypeName}}
                 yield return $"{indent}writer.WriteCell(styles, value.{member.Name}, rowIndex, {i + 1}, nameof({member.Name}), ref value);";
             }
         }
+    }
+
+    private string EmitWriteOptions()
+    {
+        var autoFilter = GetAttributeNamedArgumentValue(_reference.OpenXmlWritableAttribute, "AutoFilter", false);
+        var freezeHeader = GetAttributeNamedArgumentValue(_reference.OpenXmlWritableAttribute, "FreezeHeader", false);
+
+        return $"return new global::FastExcelSlim.OpenXml.OpenXmlExcelOptions({freezeHeader.ToString().ToLower()}, {autoFilter.ToString().ToLower()});";
     }
 
     private IEnumerable<string> EmitWriteColumns(string indent)

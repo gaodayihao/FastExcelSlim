@@ -69,8 +69,16 @@ internal static class ExcelXml
     xmlns:xr3=""http://schemas.microsoft.com/office/spreadsheetml/2016/revision3"">
 ";
 
-    internal const string SheetViews = @"<sheetViews>
-        <sheetView tabSelected=""1"" showRuler=""1"" showOutlineSymbols=""1"" defaultGridColor=""1"" colorId=""64"" zoomScale=""100"" workbookViewId=""0""></sheetView>
+    internal const string SheetViews = @"    <sheetViews>
+        <sheetView tabSelected=""1"" workbookViewId=""0""/>
+    </sheetViews>
+";
+
+    internal const string SheetViewsWithHeaderFrozen = @"    <sheetViews>
+        <sheetView tabSelected=""1"" workbookViewId=""0"">
+            <pane ySplit=""1"" topLeftCell=""A2"" activePane=""bottomLeft"" state=""frozen""/>
+            <selection pane=""bottomLeft""/>
+        </sheetView>
     </sheetViews>
 ";
 

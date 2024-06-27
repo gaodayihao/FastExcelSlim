@@ -24,17 +24,46 @@ public abstract class OpenXmlStyles
     }
 }
 
+public class NoneStyles : OpenXmlStyles
+{
+    private readonly int _defaultDateTimeCellStyleIndex;
+
+    internal NoneStyles()
+    {
+        var defaultDateTimeCellStyle = StyleTable.CreateCellStyle();
+        var format = StyleTable.GetDataFormat(BuiltinFormats.DefaultDateTimeFormat);
+        defaultDateTimeCellStyle.DataFormat = format;
+        defaultDateTimeCellStyle.AddAlignment().Vertical = CellVerticalAlignment.Center;
+
+        _defaultDateTimeCellStyleIndex = defaultDateTimeCellStyle.Id;
+    }
+
+    public override int GetCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    {
+        return NoneStyleIndex;
+    }
+
+    public override int GetHeaderStyleIndex(string propertyName)
+    {
+        return NoneStyleIndex;
+    }
+
+    public override int GetDateTimeCellStyleIndex<T>(string propertyName, scoped ref T entity)
+    {
+        return _defaultDateTimeCellStyleIndex;
+    }
+}
+
 public class DefaultStyles : OpenXmlStyles
 {
-    public static readonly DefaultStyles Instance = new();
-
-    protected CellStyle DefaultHeaderStyle { get; }
-
-    protected CellStyle DefaultDateTimeCellStyle { get; }
-
-    protected CellStyle DefaultCellStyle { get; }
+    public static readonly DefaultStyles Default = new();
+    public static readonly OpenXmlStyles None = new NoneStyles();
 
     protected Border DefaultBorder { get; }
+
+    protected CellStyle DefaultCellStyle { get; }
+    protected CellStyle DefaultHeaderStyle { get; }
+    protected CellStyle DefaultDateTimeCellStyle { get; }
 
     private DefaultStyles()
     {
@@ -49,9 +78,9 @@ public class DefaultStyles : OpenXmlStyles
         DefaultBorder.Bottom!.SetColor(IndexedColors.Automatic);
 
         // ReSharper disable VirtualMemberCallInConstructor
-        DefaultDateTimeCellStyle = CreateDefaultDateTimeStyle();
-        DefaultHeaderStyle = CreateDefaultHeaderStyle();
         DefaultCellStyle = CreateDefaultCellStyle();
+        DefaultHeaderStyle = CreateDefaultHeaderStyle();
+        DefaultDateTimeCellStyle = CreateDefaultDateTimeStyle();
     }
 
     public override int GetCellStyleIndex<T>(string propertyName, scoped ref T entity)

@@ -59,10 +59,8 @@ public partial class FastExcelSlimGenerator
 #pragma warning disable CA1050 // Declare types in namespaces.
 
 using System;
-using System.Buffers;
 using FastExcelSlim;
 using FastExcelSlim.Extensions;
-using Utf8StringInterpolation;
 ");
 
         var ns = typeMeta.Symbol.ContainingNamespace;

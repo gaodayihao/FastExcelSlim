@@ -10,7 +10,7 @@ public class OpenXmlWorkbookWriter(Stream stream, OpenXmlStyles? styles)
 {
     protected static readonly UTF8Encoding UTF8WithBom = new(true);
     private readonly ZipArchive _archive = new(stream, ZipArchiveMode.Update, true, UTF8WithBom);
-    private readonly OpenXmlStyles _styles = styles ?? DefaultStyles.Instance;
+    private readonly OpenXmlStyles _styles = styles ?? DefaultStyles.Default;
     private readonly Dictionary<string, string> _zipEntries = new();
     private readonly OpenXmlWorkbook _workbook = new();
 

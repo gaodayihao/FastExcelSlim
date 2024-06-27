@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using FastExcelSlim.OpenXml;
 using Utf8StringInterpolation;
 
 namespace FastExcelSlim;
@@ -14,6 +15,8 @@ public interface IOpenXmlFormatter<T>
     int ColumnCount { get; }
 
     string? SheetName { get; }
+
+    OpenXmlExcelOptions GetOptions();
 }
 
 #if NET7_0_OR_GREATER
@@ -37,5 +40,10 @@ public sealed class OpenXmlFormatter<T> : IOpenXmlFormatter<T> where T : IOpenXm
     public int ColumnCount => T.ColumnCount;
 
     public string? SheetName => T.SheetName;
+
+    public OpenXmlExcelOptions GetOptions()
+    {
+        return T.GetOptions();
+    }
 }
 #endif

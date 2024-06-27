@@ -1,6 +1,7 @@
 ﻿using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using FastExcelSlim.OpenXml;
 using Utf8StringInterpolation;
 
 namespace FastExcelSlim;
@@ -113,6 +114,11 @@ internal sealed class ErrorOpenXmlFormatter<T> : IOpenXmlFormatter<T>
     public int ColumnCount => 1;
 
     public string? SheetName => default;
+
+    public OpenXmlExcelOptions GetOptions()
+    {
+        return new OpenXmlExcelOptions();
+    }
 
     [DoesNotReturn]
     private void Throw()
