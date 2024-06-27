@@ -44,6 +44,8 @@ var cars = new List<Car>
 
 cars.SaveToExcel("cars.xlsx");
 ```
+<img width="345" alt="screenshot1" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
+
 
 Supported field/property types
 ---
