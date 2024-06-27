@@ -47,7 +47,11 @@ var cars = new List<Car>
     }
 };
 
+// export to local file
 cars.SaveToExcel("cars.xlsx");
+
+// export to stream.
+cars.SaveToExcel(stream);
 ```
 <img width="345" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
 
