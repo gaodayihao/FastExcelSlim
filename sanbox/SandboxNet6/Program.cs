@@ -42,3 +42,11 @@ var simples = new List<Simple>
 };
 
 simples.SaveToExcel("sample.xlsx", new SampleStyles());
+
+OpenXmlFormatterProvider.Register(new ExternalTypeEntityFormatter());
+var external = new List<ExternalTypeEntity>
+{
+    new (){ Gender = Gender.Male, Id = 1, Name = "Testing", Number = "No.1" },
+    new (){ Gender = Gender.Female, Id = 2, Name = "Alpha", Number = "No.2" }
+};
+external.SaveToExcel("external.xlsx");
