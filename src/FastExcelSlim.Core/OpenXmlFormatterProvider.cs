@@ -1,7 +1,6 @@
 ﻿using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using FastExcelSlim.OpenXml;
 using Utf8StringInterpolation;
 
 namespace FastExcelSlim;
@@ -61,9 +60,14 @@ public static class OpenXmlFormatterProvider
 
     static bool TryInvokeRegisterFormatter(Type type)
     {
-        if (typeof(IOpenXmlWritable<>).IsAssignableFrom(type))
+        if (typeof(IOpenXmlFormatterRegister).IsAssignableFrom(type))
         {
-            var m = type.GetMethod("RegisterFormatter", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            var m = type.GetMethod("FastExcelSlim.IOpenXmlFormatterRegister.RegisterFormatter", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            if (m == null)
+            {
+                // Roslyn3.11 generator generate public static method
+                m = type.GetMethod("RegisterFormatter", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            }
             if (m == null)
             {
                 throw new InvalidOperationException("Type implements IOpenXmlWritable but can not found RegisterFormatter. Type: " + type.FullName);

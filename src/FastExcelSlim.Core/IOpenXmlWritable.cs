@@ -5,14 +5,19 @@ using Utf8StringInterpolation;
 
 namespace FastExcelSlim;
 
-public interface IOpenXmlWritable<T> where T : IOpenXmlWritable<T>
+public interface IOpenXmlFormatterRegister
+{
+#if NET7_0_OR_GREATER
+    static abstract void RegisterFormatter();
+#endif
+}
+
+public interface IOpenXmlWritable<T> : IOpenXmlFormatterRegister where T : IOpenXmlWritable<T>
 {
 #if NET7_0_OR_GREATER
     static abstract int ColumnCount { get; }
 
     static abstract string? SheetName { get; }
-
-    static abstract void RegisterFormatter();
 
     static abstract void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex, scoped ref T value) where TBufferWriter : IBufferWriter<byte>;
 
