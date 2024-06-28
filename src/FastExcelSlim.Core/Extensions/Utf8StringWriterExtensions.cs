@@ -66,7 +66,7 @@ public static partial class Utf8StringWriterExtensions
         writer.AppendLiteral("</v></c>");
     }
 
-    public static void WriteColumn<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, int columnIndex, float width)
+    public static void WriteColumn<TBufferWriter>(this scoped ref Utf8StringWriter<TBufferWriter> writer, int columnIndex, double width)
         where TBufferWriter : IBufferWriter<byte>
     {
         writer.AppendFormat($"<col min=\"{columnIndex}\" max=\"{columnIndex}\" width=\"{width}\" customWidth=\"1\" collapsed=\"1\"/>");

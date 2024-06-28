@@ -75,7 +75,7 @@ public partial class DemoEntity
     public Gender Gender { get; set; }
 
     [OpenXmlOrder(4)]
-    [OpenXmlProperty(ColumnName = "Gender Value", Width = 20)]
+    [OpenXmlProperty(ColumnName = "Gender Value", Width = 20.66)]
     [OpenXmlEnumFormat("D")]
     private Gender NumberFormatGender => Gender;
 

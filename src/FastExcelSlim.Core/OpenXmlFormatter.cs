@@ -1,5 +1,4 @@
 ﻿using System.Buffers;
-using FastExcelSlim.OpenXml;
 using Utf8StringInterpolation;
 
 namespace FastExcelSlim;

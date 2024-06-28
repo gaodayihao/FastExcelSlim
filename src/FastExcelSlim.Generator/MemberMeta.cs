@@ -5,7 +5,7 @@ namespace FastExcelSlim.Generator;
 
 internal class MemberMeta
 {
-    internal int DefaultColumnWidth = 15;
+    internal double DefaultColumnWidth = 15;
 
     private readonly ReferenceSymbols _references;
 
@@ -62,12 +62,12 @@ internal class MemberMeta
 
     public string GetColumnName()
     {
-        return GetAttributeNamedArgumentValue<string>(_references.OpenXmlPropertyAttribute, "ColumnName", Name);
+        return GetAttributeNamedArgumentValue(_references.OpenXmlPropertyAttribute, "ColumnName", Name);
     }
 
-    public int GetColumnWidth()
+    public double GetColumnWidth()
     {
-        return GetAttributeNamedArgumentValue<int>(_references.OpenXmlPropertyAttribute, "Width", DefaultColumnWidth);
+        return GetAttributeNamedArgumentValue(_references.OpenXmlPropertyAttribute, "Width", DefaultColumnWidth);
     }
 
     private T GetAttributeNamedArgumentValue<T>(INamedTypeSymbol attributeSymbol, string argumentName, T defaultValue)

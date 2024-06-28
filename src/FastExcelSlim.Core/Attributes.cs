@@ -15,7 +15,7 @@ public sealed class OpenXmlPropertyAttribute : Attribute
 {
     public string? ColumnName { get; set; }
 
-    public int Width { get; set; }
+    public double Width { get; set; }
 }
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
