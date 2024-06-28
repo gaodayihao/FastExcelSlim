@@ -14,10 +14,16 @@ Additionally it's native AOT friendly. Source Generator based code generation, n
 
 Installation
 ---
+This library is distributed via NuGet. For best performance, recommend to use `.NET 7`. Minimum requirement is `.NET Standard 2.1`.
 
+> PM> Install-Package FastExcelSlim
+
+And also a code editor requires Roslyn 4.3.1 support, for example Visual Studio 2022 version 17.3, .NET SDK 6.0.401. For details, see the [Roslyn Version Support](https://learn.microsoft.com/en-us/visualstudio/extensibility/roslyn-version-support) document.
 
 Quick Start
 ---
+Define a struct or class to be serialized and annotate it with the `[OpenXmlWritable]` attribute and the `partial` keyword.
+
 ```csharp
 using FastExcelSlim;
 using FastExcelSlim.OpenXml;
@@ -407,3 +413,9 @@ AMD Ryzen 7 5800H with Radeon Graphics, 1 CPU, 16 logical and 8 physical cores
 | FastExcelSlim | 50000 |   352.614 ms |  3.7244 ms |  0.85 |          - |          - |         - |  64.21 MB |        0.24 |
 | MiniExcel     | 50000 |   413.427 ms |  5.2834 ms |  1.00 | 31000.0000 |          - |         - | 265.95 MB |        1.00 |
 | NPOI          | 50000 | 2,437.711 ms | 29.0691 ms |  5.89 |108000.0000 | 34000.0000 | 4000.0000 | 996.55 MB |        3.75 |
+
+Inspiration
+---
+- [MemoryPack](https://github.com/Cysharp/MemoryPack)
+- [MinExcel](https://github.com/mini-software/MiniExcel)
+- [NPOI](https://github.com/nissl-lab/npoi)
