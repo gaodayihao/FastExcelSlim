@@ -236,7 +236,9 @@ public enum Gender
 ```
 <img width="502" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
 
-### Custom Styles
+Custom Styles
+---
+
 There are two default styles: `Default` and `None` You can specify the style during save
 ```csharp
 students.SaveToExcel("students.xlsx", DefaultStyles.Default);
@@ -372,7 +374,8 @@ simples.SaveToExcel("simple.xlsx", new SampleStyles());
 ```
 <img width="296" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e">
 
-### Multiple sheets
+Multiple sheets
+---
 
 ```csharp
 // stream extension
@@ -388,8 +391,10 @@ writer.CreateSheet(students);
 writer.Save();
 stream.Dispose();
 ```
+
 Save external types
 ---
+
 If you want to save external types, you can make a custom formatter and register it to provider.
 
 ```csharp
@@ -459,6 +464,7 @@ var external = new List<ExternalTypeEntity>
 
 external.SaveToExcel("external.xlsx");
 ```
+<img width="462" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/1d2d034e-05d8-46ea-821c-564238f01dfb">
 
 Benchmark
 ---
