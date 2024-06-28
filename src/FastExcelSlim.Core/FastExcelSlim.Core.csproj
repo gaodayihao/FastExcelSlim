@@ -16,6 +16,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Extensions\StreamExtensions.tt">
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	    <LastGenOutput>StreamExtensions.cs</LastGenOutput>
+	  </None>
 	  <None Update="Extensions\Utf8StringWriterExtensions.WriteCell.tt">
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>Utf8StringWriterExtensions.WriteCell.cs</LastGenOutput>
@@ -27,6 +31,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Extensions\StreamExtensions.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>StreamExtensions.tt</DependentUpon>
+	  </Compile>
 	  <Compile Update="Extensions\Utf8StringWriterExtensions.WriteCell.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

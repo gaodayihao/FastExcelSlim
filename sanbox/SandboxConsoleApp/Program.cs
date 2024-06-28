@@ -13,7 +13,7 @@ Console.WriteLine("start export");
 var stream = File.Open("excelEntities.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 var sw = new Stopwatch();
 sw.Start();
-stream.SaveToExcel(excelEntities);
+stream.WriteAsExcel(excelEntities);
 stream.Dispose();
 sw.Stop();
 Console.WriteLine($"excel entities export done cost: {sw.Elapsed.TotalSeconds}s");
@@ -24,7 +24,7 @@ var students = fixture.Build<Student>().CreateMany(5000);
 
 sw.Restart();
 stream = File.Open("sandbox.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
-stream.SaveToExcel(demos, students);
+stream.WriteAsExcel(demos, students);
 stream.Dispose();
 sw.Stop();
 Console.WriteLine($"sandbox export done cost: {sw.Elapsed.TotalSeconds}s");

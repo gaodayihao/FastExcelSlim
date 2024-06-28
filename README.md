@@ -7,7 +7,7 @@
 ![](https://img.shields.io/github/issues/gaodayihao/FastExcelSlim)
 ![](https://img.shields.io/github/stars/gaodayihao/FastExcelSlim?style=social)
 
-Lightweight, fast, low-memory usage library exports entities to Excel and supports custom styles, auto filter, and freeze header functionality.
+Lightweight, fast, low-memory usage library saves entities to Excel and supports custom styles, auto filter, and freeze header functionality.
 
 Additionally it's native AOT friendly. Source Generator based code generation, no Dynamic CodeGen (IL.Emit).
 
@@ -20,6 +20,7 @@ Quick Start
 ---
 ```csharp
 using FastExcelSlim;
+using FastExcelSlim.OpenXml;
 
 [OpenXmlWritable]
 public partial class Car
@@ -47,11 +48,23 @@ var cars = new List<Car>
     }
 };
 
-// export to local file
+// save to local file
 cars.SaveToExcel("cars.xlsx");
 
-// export to stream.
+// save to stream.
 cars.SaveToExcel(stream);
+
+// stream extension
+var stream = File.Open("cars.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+stream.WriteAsExcel(cars);
+stream.Dispose();
+
+// OpenXmlWorkbookWriter
+stream = File.Open("cars.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+var writer = new OpenXmlWorkbookWriter(stream);
+writer.CreateSheet(cars);
+writer.Save();
+stream.Dispose();
 ```
 <img width="345" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
 
@@ -120,7 +133,7 @@ public partial class Sample
 
 ### Custom sheet name
 
-The default exported sheet name is `sheet[id]`, and you can specify the sheet name while annotating `OpenXmlWritableAttribute`.
+The default saved sheet name is `sheet[id]`, and you can specify the sheet name while annotating `OpenXmlWritableAttribute`.
 
 ```csharp
 [OpenXmlWritable(SheetName = "Sample")]
@@ -218,7 +231,7 @@ public enum Gender
 <img width="502" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
 
 ### Custom Styles
-There are two default styles: `Default` and `None` You can specify the style during export
+There are two default styles: `Default` and `None` You can specify the style during save
 ```csharp
 students.SaveToExcel("students.xlsx", DefaultStyles.Default);
 students.SaveToExcel("students.xlsx", DefaultStyles.None);
@@ -351,8 +364,24 @@ var simples = new List<Simple>
 simples.SaveToExcel("simple.xlsx", new SampleStyles());
 
 ```
-<img width="296" alt="PixPin_2024-06-27_17-20-58" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e">
+<img width="296" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e">
 
+### Multiple sheets
+
+```csharp
+// stream extension
+var stream = File.Open("workbook.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+stream.WriteAsExcel(cars, students);
+stream.Dispose();
+
+// OpenXmlWorkbookWriter
+stream = File.Open("cars.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+var writer = new OpenXmlWorkbookWriter(stream);
+writer.CreateSheet(cars);
+writer.CreateSheet(students);
+writer.Save();
+stream.Dispose();
+```
 
 Benchmark
 ---
