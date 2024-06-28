@@ -4,6 +4,8 @@
 		<TargetFrameworks>net7.0;net8.0;netstandard2.1</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<PackageTags>excel;openxml</PackageTags>
+		<Description>Core libraries(attribute, logics) of FastExcelSlim.</Description>
 	</PropertyGroup>
 
 	<ItemGroup>

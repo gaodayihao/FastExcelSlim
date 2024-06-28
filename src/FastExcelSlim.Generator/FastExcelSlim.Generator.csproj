@@ -13,6 +13,8 @@
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 		<IsRoslynComponent>true</IsRoslynComponent>
 		<RootNamespace>FastExcelSlim.Generator</RootNamespace>
+		<PackageTags>excel;openxml</PackageTags>
+		<Description>Code generator for FastExcelSlim.</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
