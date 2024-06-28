@@ -131,7 +131,7 @@ public partial class Sample
 }
 ```
 
-### Custom sheet name
+### Sheet name
 
 The default saved sheet name is `sheet[id]`, and you can specify the sheet name while annotating `OpenXmlWritableAttribute`.
 
@@ -165,7 +165,7 @@ public partial class Sample
 }
 ```
 
-### Custom column header name
+### Column header
 Default column header is the name of each field/property, and you can annotate `OpenXmlPropertyAttribute` to specify the column header.
 ```csharp
 [OpenXmlWritable(FreezeHeader = true, AutoFilter = true, SheetName = "Sample")]
@@ -176,7 +176,7 @@ public partial class Sample
 }
 ```
 
-### Custom column width
+### Column width
 You can also set the width for each column, with a default value of 15.
 ```csharp
 [OpenXmlWritable]
