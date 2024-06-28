@@ -5,5 +5,14 @@
 		<NoWarn>$(NoWarn);CS1591;CS0436;CS8034;</NoWarn>
 		<RootNamespace>FastExcelSlim</RootNamespace>
 		<TieredPGO>true</TieredPGO>
+
+		<!-- NuGet Packaging -->
+		<PackageVersion>$(Version)</PackageVersion>
+		<Authors>gaodayihao</Authors>
+		<PackageProjectUrl>https://github.com/gaodayihao/FastExcelSlim</PackageProjectUrl>
+		<RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>GPL3.0</PackageLicenseExpression>
+		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
 	</PropertyGroup>
 </Project>
