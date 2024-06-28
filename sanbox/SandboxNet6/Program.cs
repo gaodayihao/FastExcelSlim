@@ -41,4 +41,4 @@ var simples = new List<Simple>
     },
 };
 
-simples.SaveToExcel("simple.xlsx", new SampleStyles());
+simples.SaveToExcel("sample.xlsx", new SampleStyles());

@@ -140,7 +140,7 @@ internal class TypeMeta
             (false, false) => "class",
         };
 
-        string staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, staticReturnBooleanMethod, registerBody, registerT, constraint;
+        string staticRegisterMethod, staticReturnVoidMethod, staticReturnIntMethod, staticReturnStringMethod, staticReturnBooleanMethod, registerBody, registerT, constraint;
         var scopedRef = (context.IsCSharp11OrGreater())
             ? "scoped ref"
             : "ref";
@@ -148,6 +148,7 @@ internal class TypeMeta
         if (!context.IsNet7OrGreater)
         {
             staticReturnVoidMethod = "internal static void ";
+            staticRegisterMethod = "internal static void ";
             staticReturnIntMethod = "internal static int ";
             staticReturnStringMethod = "internal static string? ";
             staticReturnBooleanMethod = "internal static bool ";
@@ -158,6 +159,7 @@ internal class TypeMeta
         else
         {
             staticReturnVoidMethod = $"static void IOpenXmlWritable<{TypeName}>.";
+            staticRegisterMethod = "static void IOpenXmlFormatterRegister.";
             staticReturnIntMethod = $"static int IOpenXmlWritable<{TypeName}>.";
             staticReturnStringMethod = $"static string? IOpenXmlWritable<{TypeName}>.";
             staticReturnBooleanMethod = $"static bool IOpenXmlWritable<{TypeName}>.";
@@ -190,7 +192,7 @@ partial {{classOrStructOrRecord}} {{TypeName}} : IOpenXmlWritable<{{TypeName}}>
     }
     
     [global::FastExcelSlim.Internal.Preserve]
-    {{staticReturnVoidMethod}}RegisterFormatter()
+    {{staticRegisterMethod}}RegisterFormatter()
     {
         if (!global::FastExcelSlim.OpenXmlFormatterProvider.IsRegistered<{{TypeName}}>())
         {
