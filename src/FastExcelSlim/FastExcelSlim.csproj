@@ -7,9 +7,11 @@
 		<IncludeContentInPack>true</IncludeContentInPack>
 		<PackageTags>excel;openxml</PackageTags>
 		<Description>Lightweight, fast, low-memory usage library saves entities to Excel.</Description>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
 		<EmbeddedResource Include="..\..\LICENSE" />
 		<ProjectReference Include="..\FastExcelSlim.Core\FastExcelSlim.Core.csproj" />
 		<ProjectReference Include="..\FastExcelSlim.Generator\FastExcelSlim.Generator.csproj" />

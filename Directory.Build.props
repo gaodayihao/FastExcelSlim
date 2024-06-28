@@ -1,7 +1,6 @@
 <Project>
 	<PropertyGroup>
 		<LangVersion>latest</LangVersion>
-		<Version>1.0.0</Version>
 		<NoWarn>$(NoWarn);CS1591;CS0436;CS8034;</NoWarn>
 		<RootNamespace>FastExcelSlim</RootNamespace>
 		<TieredPGO>true</TieredPGO>
@@ -12,7 +11,6 @@
 		<PackageProjectUrl>https://github.com/gaodayihao/FastExcelSlim</PackageProjectUrl>
 		<RepositoryUrl>$(PackageProjectUrl)</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageLicenseExpression>GPL3.0</PackageLicenseExpression>
-		<AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)opensource.snk</AssemblyOriginatorKeyFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 </Project>
