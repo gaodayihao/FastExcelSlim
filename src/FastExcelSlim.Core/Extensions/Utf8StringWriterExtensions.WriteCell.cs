@@ -9,7 +9,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         string? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var preserveSpace = !string.IsNullOrEmpty(value) && (value.StartsWith(' ') || value.EndsWith(' '));
@@ -27,7 +26,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         char? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -44,7 +42,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         bool? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var cellValue = value switch
@@ -65,7 +62,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         Guid? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -97,7 +93,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         DateOnly? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -118,7 +113,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         TimeOnly? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -134,7 +128,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         DateTime? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetDateTimeCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -155,7 +148,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         TValue? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity, string format = "G")
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
         where TValue : Enum
     {
@@ -171,7 +163,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         byte? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -186,7 +177,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         decimal? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -201,7 +191,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         double? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -216,7 +205,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         short? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -231,7 +219,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         int? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -246,7 +233,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         long? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -261,7 +247,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         sbyte? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -276,7 +261,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         float? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -291,7 +275,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         ushort? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -306,7 +289,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         uint? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
@@ -321,7 +303,6 @@ static partial class Utf8StringWriterExtensions
         this scoped ref Utf8StringWriter<TBufferWriter> writer,
         OpenXmlStyles styles,
         ulong? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
-        where T : IOpenXmlWritable<T>
         where TBufferWriter : IBufferWriter<byte>
     {
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
