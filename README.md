@@ -72,8 +72,7 @@ writer.CreateSheet(cars);
 writer.Save();
 stream.Dispose();
 ```
-<img width="345" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb">
-
+![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/d355efc0-133a-411f-99f5-e8227efacfeb)
 
 Supported field/property types
 ---
@@ -234,7 +233,7 @@ public enum Gender
     Others
 }
 ```
-<img width="502" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4">
+![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/7fb2bb20-8f57-41f8-9a88-08b0009ec5d4)
 
 Custom Styles
 ---
@@ -247,11 +246,11 @@ students.SaveToExcel("students.xlsx", DefaultStyles.None);
 
 * Default
 
-    <img width="622" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/6d81c5eb-cb73-4081-9a8a-c5a5080ce441">
+    ![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/6d81c5eb-cb73-4081-9a8a-c5a5080ce441)
 
 * None
 
-    <img width="617" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/b8ea0124-35f6-4875-9170-ce99393a8815">
+    ![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/b8ea0124-35f6-4875-9170-ce99393a8815)
 
 You can also customize styles by inheriting from the `OpenXmlStyles` class
 
@@ -372,7 +371,7 @@ var simples = new List<Simple>
 simples.SaveToExcel("simple.xlsx", new SampleStyles());
 
 ```
-<img width="296" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e">
+![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e)
 
 Multiple sheets
 ---
@@ -464,7 +463,7 @@ var external = new List<ExternalTypeEntity>
 
 external.SaveToExcel("external.xlsx");
 ```
-<img width="462" src="https://github.com/gaodayihao/FastExcelSlim/assets/1639892/1d2d034e-05d8-46ea-821c-564238f01dfb">
+![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/1d2d034e-05d8-46ea-821c-564238f01dfb)
 
 Benchmark
 ---
