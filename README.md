@@ -22,7 +22,7 @@ And also a code editor requires Roslyn 4.3.1 support, for example Visual Studio 
 
 Quick Start
 ---
-Define a struct or class to be serialized and annotate it with the `[OpenXmlWritable]` attribute and the `partial` keyword.
+Define a struct or class to be written to excel and annotate it with the `[OpenXmlWritable]` attribute and the `partial` keyword.
 
 ```csharp
 using FastExcelSlim;
@@ -53,18 +53,26 @@ var cars = new List<Car>
         Number = "MU-02-35-35"
     }
 };
+```
 
+```csharp
 // save to local file
 cars.SaveToExcel("cars.xlsx");
+```
 
+```csharp
 // save to stream.
 cars.SaveToExcel(stream);
+```
 
+```csharp
 // stream extension
 var stream = File.Open("cars.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 stream.WriteAsExcel(cars);
 stream.Dispose();
+```
 
+```csharp
 // OpenXmlWorkbookWriter
 stream = File.Open("cars.xlsx", FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 var writer = new OpenXmlWorkbookWriter(stream);
