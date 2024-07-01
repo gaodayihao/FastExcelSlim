@@ -267,8 +267,8 @@ using System.Drawing;
 using FastExcelSlim;
 using FastExcelSlim.OpenXml;
 
-[OpenXmlWritable(SheetName = "Simple")]
-internal partial class Simple
+[OpenXmlWritable(SheetName = "Sample")]
+internal partial class Sample
 {
     public string Name { get; set; }
 
@@ -348,7 +348,7 @@ internal class SampleStyles : OpenXmlStyles
     }
 }
 
-var simples = new List<Simple>
+var samples = new List<Sample>
 {
     new()
     {
@@ -376,7 +376,7 @@ var simples = new List<Simple>
     },
 };
 
-simples.SaveToExcel("simple.xlsx", new SampleStyles());
+samples.SaveToExcel("sample.xlsx", new SampleStyles());
 
 ```
 ![](https://github.com/gaodayihao/FastExcelSlim/assets/1639892/0a045c30-5c17-47fa-8e71-f8f4981b862e)
