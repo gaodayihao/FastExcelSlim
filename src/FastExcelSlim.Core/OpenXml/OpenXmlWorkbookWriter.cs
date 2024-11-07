@@ -143,7 +143,7 @@ internal ref struct ZipEntryWriterWrapper(Stream stream, StreamPipeWriter pipeWr
     {
         if (pipeWriter.UnflushedBytes >= BufferSize)
         {
-            Writer.Flush();
+            Writer.ClearState();
             pipeWriter.FlushInternal(true);
         }
     }
