@@ -101,13 +101,13 @@ namespace FastExcelSlim.BufferWriter
                     if (_tailBytesBuffered > 0)
                     {
                         // Flush buffered data to the segment
-                        _tail.End += _tailBytesBuffered;
+                        _tail!.End += _tailBytesBuffered;
                         _tailBytesBuffered = 0;
                     }
 
                     BufferSegment newSegment = AllocateSegment(sizeHint);
 
-                    _tail.SetNext(newSegment);
+                    _tail!.SetNext(newSegment);
                     _tail = newSegment;
                 }
             }
@@ -149,7 +149,7 @@ namespace FastExcelSlim.BufferWriter
         {
             if (_bufferSegmentPool.TryPop(out BufferSegment? segment))
             {
-                return segment;
+                return segment!;
             }
 
             return new BufferSegment();
@@ -272,7 +272,7 @@ namespace FastExcelSlim.BufferWriter
                 Debug.Assert(_tail != null);
 
                 // Update any buffered data
-                _tail.End += _tailBytesBuffered;
+                _tail!.End += _tailBytesBuffered;
                 _tailBytesBuffered = 0;
             }
 
@@ -349,7 +349,7 @@ namespace FastExcelSlim.BufferWriter
                 Debug.Assert(_tail != null);
 
                 // Update any buffered data
-                _tail.End += _tailBytesBuffered;
+                _tail!.End += _tailBytesBuffered;
                 _tailBytesBuffered = 0;
             }
 

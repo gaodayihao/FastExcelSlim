@@ -42,7 +42,7 @@ public class OpenXmlWorkbookWriter(Stream stream, OpenXmlStyles? styles)
         pipeWriter.Complete();
         if (!string.IsNullOrEmpty(contentType))
         {
-            _zipEntries[path] = contentType;
+            _zipEntries[path] = contentType!;
         }
     }
 
@@ -53,7 +53,7 @@ public class OpenXmlWorkbookWriter(Stream stream, OpenXmlStyles? styles)
         var pipeWriter = new StreamPipeWriter(zipStream, new StreamPipeWriterOptions(leaveOpen: true));
         if (!string.IsNullOrEmpty(contentType))
         {
-            _zipEntries[path] = contentType;
+            _zipEntries[path] = contentType!;
         }
 
         return new ZipEntryWriterWrapper(zipStream, pipeWriter);
@@ -104,8 +104,15 @@ public class OpenXmlWorkbookWriter(Stream stream, OpenXmlStyles? styles)
     {
         var wrapper = CreateZipEntryWriterWrapper(ExcelFilePath.ContentTypes);
         wrapper.Writer.AppendFormat($"{ExcelXml.ContentTypesStart}{ExcelXml.ContentTypesDefault}");
+#if !NETSTANDARD2_0
         foreach (var (path, type) in _zipEntries)
         {
+#else
+        foreach (var kvp in _zipEntries)
+        {
+            var path = kvp.Key;
+            var type = kvp.Value;
+#endif
             wrapper.Writer.AppendFormat($"<Override PartName=\"/{path}\" ContentType=\"{type}\" />");
         }
         wrapper.Writer.AppendLiteral(ExcelXml.ContentTypesEnd);

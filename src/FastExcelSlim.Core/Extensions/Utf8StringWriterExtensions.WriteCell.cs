@@ -11,7 +11,7 @@ static partial class Utf8StringWriterExtensions
         string? value, int rowIndex, int columnIndex, string propertyName, scoped ref T entity)
         where TBufferWriter : IBufferWriter<byte>
     {
-        var preserveSpace = !string.IsNullOrEmpty(value) && (value.StartsWith(' ') || value.EndsWith(' '));
+        var preserveSpace = !string.IsNullOrEmpty(value) && (value!.StartsWith(' ') || value!.EndsWith(' '));
         var styleIndex = styles.GetCellStyleIndex(propertyName, rowIndex, ref entity);
         writer.AppendLiteral("<c r=\"");
         writer.ConvertXYToCellReference(columnIndex, rowIndex);

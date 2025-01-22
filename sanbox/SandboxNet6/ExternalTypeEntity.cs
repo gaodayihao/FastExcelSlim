@@ -17,8 +17,8 @@ public sealed class ExternalTypeEntity
 
 public class ExternalTypeEntityFormatter : IOpenXmlFormatter<ExternalTypeEntity>
 {
-    public void WriteCell<TBufferWriter>(ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex,
-        ref ExternalTypeEntity value) where TBufferWriter : IBufferWriter<byte>
+    public void WriteCell<TBufferWriter>(scoped ref Utf8StringWriter<TBufferWriter> writer, OpenXmlStyles styles, int rowIndex,
+        scoped ref ExternalTypeEntity value) where TBufferWriter : IBufferWriter<byte>
     {
         writer.WriteCell(styles, value.Id, rowIndex, 1, nameof(ExternalTypeEntity.Id), ref value);
         writer.WriteCell(styles, value.Name, rowIndex, 2, nameof(ExternalTypeEntity.Name), ref value);
@@ -45,7 +45,7 @@ public class ExternalTypeEntityFormatter : IOpenXmlFormatter<ExternalTypeEntity>
 
     public int ColumnCount => 4;
 
-    public string? SheetName => "External";
+    public string SheetName => "External";
 
     public bool FreezeHeader => true;
 

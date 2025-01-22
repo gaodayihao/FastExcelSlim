@@ -113,7 +113,7 @@ namespace FastExcelSlim.BufferWriter
             while (segment.Next != null)
             {
                 Debug.Assert(segment.NextSegment != null);
-                segment.NextSegment.RunningIndex = segment.RunningIndex + segment.Length;
+                segment.NextSegment!.RunningIndex = segment.RunningIndex + segment.Length;
                 segment = segment.NextSegment;
             }
         }

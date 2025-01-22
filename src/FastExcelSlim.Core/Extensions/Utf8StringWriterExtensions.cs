@@ -1,4 +1,5 @@
 ﻿using System.Buffers;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Utf8StringInterpolation;
 
@@ -90,11 +91,11 @@ public static partial class Utf8StringWriterExtensions
 
         const byte a = (byte)'A';
         var xDigitCount = CountXDigits((uint)column);
-        var yDigitCount = CountDigits((uint)row);
+        var yDigitCount = FormattingHelpers.CountDigits((uint)row);
 
         Span<byte> columnChars = stackalloc byte[xDigitCount + yDigitCount];
-        var xCharBytes = columnChars[..xDigitCount];
-        var yCharBytes = columnChars[xDigitCount..];
+        var xCharBytes = columnChars.Slice(0,xDigitCount);
+        var yCharBytes = columnChars.Slice(xDigitCount);
 
         var index = 1;
         var dividend = column;
@@ -102,20 +103,11 @@ public static partial class Utf8StringWriterExtensions
         while (dividend > 0)
         {
             var modulo = (dividend - 1) % 26;
-            xCharBytes[^index++] = (byte)(a + modulo);
+            xCharBytes[xCharBytes.Length - index++] = (byte)(a + modulo);
             dividend = (dividend - modulo) / 26;
         }
 
-#if NET8_0_OR_GREATER
         row.TryFormat(yCharBytes, out _);
-#else
-        Span<char> chars = stackalloc char[yDigitCount];
-        row.TryFormat(chars, out _);
-        for (int i = 0; i < chars.Length; i++)
-        {
-            yCharBytes[i] = (byte)chars[i];
-        }
-#endif
 
         writer.AppendUtf8(columnChars);
     }
@@ -148,53 +140,5 @@ public static partial class Utf8StringWriterExtensions
         }
 
         return digitCount;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static int CountDigits(uint value)
-    {
-#if NET7_0_OR_GREATER
-        // Algorithm based on https://lemire.me/blog/2021/06/03/computing-the-number-of-digits-of-an-integer-even-faster.
-        ReadOnlySpan<long> table =
-        [
-            4294967296,
-            8589934582,
-            8589934582,
-            8589934582,
-            12884901788,
-            12884901788,
-            12884901788,
-            17179868184,
-            17179868184,
-            17179868184,
-            21474826480,
-            21474826480,
-            21474826480,
-            21474826480,
-            25769703776,
-            25769703776,
-            25769703776,
-            30063771072,
-            30063771072,
-            30063771072,
-            34349738368,
-            34349738368,
-            34349738368,
-            34349738368,
-            38554705664,
-            38554705664,
-            38554705664,
-            41949672960,
-            41949672960,
-            41949672960,
-            42949672960,
-            42949672960,
-        ];
-        var tableValue = Unsafe.Add(ref MemoryMarshal.GetReference(table), uint.Log2(value));
-        return (int)((value + tableValue) >> 32);
-#else
-        var count = Math.Floor(Math.Log10(value) + 1);
-        return (int)count;
-#endif
     }
 }
